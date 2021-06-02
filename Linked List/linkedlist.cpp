@@ -131,3 +131,19 @@ ListNode* sortList(ListNode* head) {
         mid->next=NULL;
         return mergeTwoSortedLists(sortList(head),sortList(newHead));
     }
+
+//https://leetcode.com/problems/merge-k-sorted-lists/
+//Approach- The linked list is stored in vector form so find mid using si+(ei-si)/2. The list will continue to divide into two recursively
+//Then merge the list from start to mid and then mid+1 to end. The smaller lists will sort themselves and merge with their other halves to return sorted list
+
+ListNode* mergeKLists (vector<ListNode*> & lists, int si, int ei){
+        if(si==ei) return lists[si];
+        int mid=si+(ei-si)/2;
+        ListNode*list1=mergeKLists(lists, si, mid);
+        ListNode*list2=mergeKLists(lists,mid+1,ei);
+        return mergeTwoSortedLists(list1,list2);
+    }
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size()==0) return NULL;
+        return mergeKLists(lists,0,lists.size()-1);
+    }
