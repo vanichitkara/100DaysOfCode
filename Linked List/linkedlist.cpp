@@ -336,3 +336,106 @@ Node* divide(int N, Node *head){
         return dummyEven->next;
     }
 
+//June 3
+
+//https://leetcode.com/problems/reverse-nodes-in-k-group/submissions/
+//Approach- First find the length of ll. Then declare a curr pointer at head. Declare original head, original tail, temp head and temp tail.
+//While length is greater than k, break the list and reverse it using add first node, set original head as temp head and original tail as temp tail if oh=NULL
+//else join original tail with temp head and move original tail at temp tail to join the reversed list with the remaining list. 
+//Make temp head and temp tail null after this step. Then subtract k from length and repear the same process till length is less than k. 
+//After the while loop ends and the list is reversed in k groups, join the unchanged list by joining original tail with curr and return head
+
+    int lengthOfLL (ListNode* head){
+        ListNode* temp=head;
+        int count=0;
+        while(temp!=NULL){
+            count++;
+            temp=temp->next;
+        }
+        return count;
+    }
+    
+    ListNode* th=NULL, *tt=NULL;
+    void addFirstNode(ListNode* node){
+        if(th==NULL){
+            th=node;
+            tt=node;
+        }
+        else{
+            node->next=th;
+            th=node;
+        }
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(head==NULL||head->next==NULL||k==1) return head;
+        ListNode* oh=NULL, *ot=NULL;
+        int len=lengthOfLL(head);
+        ListNode* curr=head;
+        
+        while(len>=k){
+            int tempK=k;
+            while(tempK-->0){
+                ListNode* forw=curr->next;
+                curr->next=NULL;
+                addFirstNode(curr);
+                curr=forw;
+            }
+            if(oh==NULL){
+                oh=th;
+                ot=tt;
+            }
+            else{
+                ot->next=th;
+                ot=tt;
+            }
+            len-=k;
+            th=tt=NULL;
+        }
+        ot->next=curr;
+        return oh;
+    }
+
+//https://leetcode.com/problems/copy-list-with-random-pointer/submissions/
+//Approach- To make a deep copy of the list, first we copy the elements and tie them together with the original list, i.e, if the list is a->b->c, 
+// then copied list would be a->a'->b->b'->c-c', where a',b' and c' are the copies. Then attach the random pointers of the copied nodes according to the
+// random pointers of original nodes. At last, extraxt the linked list by making a dummy node and attaching the copied elements to it and returning the new list
+
+    void copyList (Node* head){
+        Node* curr=head;
+        while(curr!=NULL){
+            Node* forw=curr->next;
+            Node* node=new Node(curr->val);
+            node->next=forw;
+            curr->next=node;
+            curr=forw;
+        }
+    }
+    
+    void setRandom (Node* head){
+        Node* curr=head;
+        while(curr!=NULL){
+            if(curr->random!=NULL){
+                curr->next->random=curr->random->next;  
+            }
+            curr=curr->next->next;
+        }
+    }
+    
+    Node* extractLL (Node* head){
+        Node* dummy= new Node(-1);
+        Node* copyCurr=dummy;
+        Node* curr=head;
+        while(curr!=NULL){
+            copyCurr->next=curr->next;
+            curr->next=curr->next->next;
+            curr=curr->next;
+            copyCurr=copyCurr->next;
+        }
+        return dummy->next;
+    }
+    Node* copyRandomList(Node* head) {
+        if(head==NULL) return head;
+        copyList(head);
+        setRandom(head);
+        return extractLL(head);
+    }
