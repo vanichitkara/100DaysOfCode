@@ -439,3 +439,74 @@ Node* divide(int N, Node *head){
         setRandom(head);
         return extractLL(head);
     }
+
+//https://leetcode.com/problems/lru-cache/
+//Approach- Make a class ListNode which makes a pair of int inside the class. So the linked list node is actually a pair of key and value inside the class.
+//Get: if the app is not recently used, delete it from back & bring it to front, if the app was not opened before, add it to the front. Return latest state of app
+//Put: if the app was present before, delete it from behind and add it to fron. if the capacity is full, delete the least recent used app (tail->prev)
+//if the app wasn't opened before, add it in the front. Auxiliary functions deleteNode and addNode are made. 
+
+class ListNode{
+        public:
+        pair<int,int>val;
+        ListNode* next, *prev;
+        void deleteNode(ListNode* node);
+        void addNode (int key, int val);
+        
+        ListNode() {
+            val=make_pair(0,0);
+            prev=next=NULL;
+        }
+        
+        ListNode(int a, int b){
+            val=make_pair(a,b);
+            prev=next=NULL;
+        }
+    };
+    
+    int size;
+    unordered_map<int, ListNode*> m;
+    ListNode* head, *tail;
+    
+    LRUCache(int capacity) {
+        size=capacity;
+        head=new ListNode();
+        tail=new ListNode();
+        head->next=tail;
+        tail->prev=head;
+    }
+    
+    int get(int key) {
+        int x=-1;
+        if(m.find(key)!=m.end()){
+            x=m[key]->val.second;
+            deleteNode(m[key]);
+            addNode(key,x);
+        }
+        return x;
+    }
+    
+    void put(int key, int value) {
+        if(m.find(key)!=m.end()){
+            deleteNode(m[key]);
+        }
+        if(m.size()==size){
+            deleteNode(tail->prev);
+        }
+        addNode(key,value);
+    }
+    
+    void addNode(int key, int val){
+        ListNode* node= new ListNode(key,val);
+        node->next=head->next;
+        node->next->prev=node;
+        head->next=node;
+        node->prev=head;
+        m[key]=head->next;
+    }
+    
+    void deleteNode(ListNode* node){
+        m.erase(node->val.first);
+        node->next->prev=node->prev;
+        node->prev->next=node->next;
+    }
