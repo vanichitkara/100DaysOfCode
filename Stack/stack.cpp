@@ -265,21 +265,23 @@ void NSOL(vector<int> &arr, vector<int>& ans){
         return area;
     }
 
-//Approach 2-
+//Approach 2- The indexes of heights are pushed into the stack. When a height is encountered which is less than or equal to height at the index present at 
+//top of stack, the stack elements are popped out. Width is calculated by formula width=i-st.top()-1 and height is the height of index encountered.
+//Max area is calculated by comparing max area with product of width and height of the index encountered.
 
 int largestRectangleArea(vector<int>& heights) {
-        stack<int> st;
         int n=heights.size();
+        stack<int> st;
         st.push(-1);
-        int i=0; 
         int maxArea=0;
+        int i=0; 
         while(i<n){
-            while(st.size()!=0 && heights[st.top]>=heights[i]){
+            while(st.top()!=-1 && heights[st.top()]>=heights[i]){
                 int idx=st.top();
                 st.pop();
                 int h=heights[idx];
                 int w=i-st.top()-1;
-                maxArea=max(area,h*w);
+                maxArea=max(maxArea,h*w);
             }
             st.push(i++);
         }
