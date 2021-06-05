@@ -164,3 +164,105 @@ bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
         }
         return i==n;
     }
+
+//June 5
+
+//https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
+//Approach- Maintaining vector as a stack and pushing closing bracket's index if vector is empty and opening bracket indixes. 
+//Opening brackets are popped by its corresponding closing bracket. The resulting vector stores the index of extra parentheses. We make a new string
+//and push back the characters from original string while ignoring the brackets present at the index stored in the vector
+
+string minRemoveToMakeValid(string s) {
+        vector<int> st;
+        int n=s.size();
+        for(int i=0; i<n; i++){
+            char ch=s[i];
+            if(ch=='(') st.push_back(i);
+            else if(ch==')') {
+                if(st.size()!=0 && s[st.back()]=='(') st.pop_back();
+                else st.push_back(i);
+            }
+        }
+        int idx=0;
+        string ans="";
+        for(int i=0; i<n; i++){
+            if(idx<st.size() && st[idx]==i){
+                idx++;
+                continue;
+            }
+            ans+=s[i];
+        }
+        return ans;
+    }
+
+//https://leetcode.com/problems/asteroid-collision/
+//Approach- Asteroids collide only when asteroids approaching each other collide. A stack is maintained and positive elements are pushed. Whena negative element
+//is encountered, and while its mod is greater than top of the stack and the stack elements are positive, the elements in stack are popped out. 
+//If the mod of element is equal to the mod of stack's top, the top is popped out, else if either stack is empty or the is stack members are negative, the element
+//is pushed. Then the stack elements are pushed in a vector.
+
+vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int> st;
+        for(int ele: asteroids){
+            if(ele<0){
+                while(st.size()!=0 && st.top()<-ele && st.top()>0) st.pop();
+                if(st.size()==0 || st.top()<0) st.push(ele);
+                if(ele==-st.top()) st.pop();
+            }
+            else st.push(ele);
+        }
+        int idx=st.size();
+        vector<int> v(st.size(),0);
+        while(idx-->0){
+            v[idx]=st.top();
+            st.pop();
+        }
+        return v;
+    }
+
+//https://leetcode.com/problems/largest-rectangle-in-histogram/submissions/
+//Approach 1- Find nearest smaller element on left, and if not present fill array with -1. Find nearest smaller element on right and if not present fill array
+//with the size of array. Find width using the formula NSOR[i]-NSOL[i]-1 and find maximum area by comparing the already stored area with width* height[i]
+
+void NSOL(vector<int> &arr, vector<int>& ans){
+        stack<int> st;
+        int n=arr.size();
+        ans.resize(n,-1);
+        for(int i=n-1; i>=0 ;i--){
+            while(st.size()!=0 && arr[st.top()]>arr[i]){
+                ans[st.top()]=i;
+                st.pop();
+            }
+            st.push(i);
+        }
+        for(int i=0; i<n ;i++) cout<<ans[i]<<" ";
+        cout<<endl;
+    }
+    void NSOR(vector<int> &arr, vector<int>& ans){
+        stack<int> st;
+        int n=arr.size();
+        ans.resize(n,n);
+        for(int i=0; i<n ;i++){
+            while(st.size()!=0 && arr[st.top()]>arr[i]){
+                ans[st.top()]=i;
+                st.pop();
+            }
+            st.push(i);
+        }
+        for(int i=0; i<n ;i++) cout<<ans[i]<<" ";
+    }
+    
+    int largestRectangleArea(vector<int>& heights) {
+        vector<int> nsol,nsor;
+        NSOL(heights, nsol);
+        NSOR(heights, nsor);
+        int area=0;
+        int n=heights.size();
+        for(int i=0; i<n; i++){
+            int width=nsor[i]-nsol[i]-1;
+            area=max(area,width*heights[i]);
+        }
+        return area;
+    }
+
+//Approach 2-
