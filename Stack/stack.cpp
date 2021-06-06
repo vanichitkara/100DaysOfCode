@@ -401,4 +401,74 @@ void NSOL(vector<int>& arr, vector<int>& ans){
         return maxRec;
     }
 
-//
+//https://leetcode.com/problems/remove-k-digits/
+//The digits are stored in stack and if a digit smaller than stack's top is seen, the stack elements are popped out till stack's top is smaller than the digit
+//The digits are no longer popped when we have removed k digits. If digits are in increasing order, the trailing digits are removed till we cannot remove more
+//The leading zeroes are ignored and rest of the digits are pushed from stack to a string and is returned.
+
+string removeKdigits(string num, int k) {
+        vector<char> st;
+        int n=num.size();
+        for(int i=0; i<n; i++){
+            char ch=num[i];
+            while(st.size()!=0 && st.at(st.size()-1)>ch && k>0){
+                st.pop_back();
+                k--;
+            }
+            st.push_back(ch);
+        }
+        while(k--) st.pop_back();
+        string ans="";
+        bool flag=false;
+        for(char ch:st){
+            if(ch=='0'&&!flag){
+                continue;
+            }
+            flag=true;
+            ans.push_back(ch);
+        }
+        return ans;
+    }
+
+//https://leetcode.com/problems/remove-duplicate-letters/
+//The string is traversed first and the frequency of letter is maintained in a vector. Then we traverse the string again and reduce the frequency of letter
+//and mark it as visited. To have the string in the smallest lexicographical order, we store the letters in a string used as stacka and pop letter out when
+//a smaller letter is found. The letters are only popped if their frequency is not zero and we can encounter them again. The removed letters are marked unvisited
+
+string removeDuplicateLetters(string s) {
+        int n=s.size();
+        vector<int> freq(26,0);
+        vector<bool> vis(16,false);
+        string st="";
+        for(char ch:s) freq[ch-'a']++;
+        for(char ch:s){
+            freq[ch-'a']--;
+            if(vis[ch-'a']) continue;
+            while(st.size()!=0 && st.back()>ch && freq[st.back()-'a']>0){
+                char rch=st.back();
+                st.pop_back();
+                vis[rch-'a']=false;
+            }
+            vis[ch-'a']=true;
+            st.push_back(ch);
+        }
+        return st;
+    }
+
+//https://leetcode.com/problems/longest-valid-parentheses/
+//Approach- Stack is made and -1 is pushed as reference value. The indexes of opening and closing brackets and pushed and when stack's top is an opening braket &
+//a closing bracket is encountered, stack's top is popped, and the length of parentheses is counted by subtracting the index at stacks'top from the current index
+
+int longestValidParentheses(string s) {
+        int n=s.size();
+        stack<int>st;
+        int len=0;
+        st.push(-1);
+        for(int i=0; i<n; i++){
+            if(st.top()!=-1 && s[st.top()]=='(' && s[i]==')')
+                st.pop();
+            else st.push(i);
+            len=max(len,i-st.top());
+        }
+       return len; 
+    }
