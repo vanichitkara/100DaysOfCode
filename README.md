@@ -10,3 +10,5 @@ Day 3- Solved 3 questions of linked list (reverse nodes in k group, copy list wi
 Day 4- Started with Stacks. Solved 9 questions of stacks (next greater on right, next greater on left, next smaller on right, next smaller on left, next greater element II, stock span, online stock span, valid parentheses sequence, valid stack sequence)
 
 Day 5- Solved 3 questions of Stacks (minimum remove to make valid parentheses, asteroid collision, largest rectangle in histogram)
+
+Day6- Solved 6 questions of Stacks (maximal rectangle, remove k digits, remove duplicate letters, longest valid parentheses, min stack, trapping rain water)
