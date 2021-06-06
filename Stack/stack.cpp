@@ -295,3 +295,110 @@ int largestRectangleArea(vector<int>& heights) {
         }
         return maxArea;
     }
+
+//June 6
+
+//https://leetcode.com/problems/maximal-rectangle/submissions/
+//Approach- We'll use the approach to find largest recatngle in histogram. We'll check for the top row, then top two rows, then top 3 rows and so on.
+//The maximum rectangle will be stored and compared with height*width of othe rectangles found.
+//Code-1
+void NSOL(vector<int>& arr, vector<int>& ans){
+        int n=arr.size();
+        ans.resize(n,-1);
+        stack<int> st;
+        for(int i=n-1; i>=0; i--){
+            while(st.size()!=0 && arr[st.top()]>arr[i]){
+                ans[st.top()]=i;
+                st.pop();
+            }
+            st.push(i);
+        }
+    }
+    
+    void NSOR(vector<int>&arr, vector<int>& ans){
+        int n=arr.size();
+        ans.resize(n,n);
+        stack<int> st;
+        for(int i=0; i<n; i++){
+            while(st.size()!=0 && arr[st.top()]>arr[i]){
+                ans[st.top()]=i;
+                st.pop();
+            }
+            st.push(i);
+        }
+    }
+    
+    int largestRectangle(vector<int>& heights){
+        int largestRec=0;
+        int n=heights.size();
+        vector<int> nsol, nsor;
+        NSOL(heights, nsol);
+        NSOR(heights, nsor);
+        for(int i=0; i<n; i++){
+            int h=heights[i];
+            int w=nsor[i]-nsol[i]-1;
+            largestRec=max(largestRec, h*w);
+        }
+        return largestRec;
+    }
+    
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if(matrix.size()==0||matrix[0].size()==0) return 0;
+        int maxRec=0;
+        int n=matrix.size();
+        int m=matrix[0].size();
+        vector<int> heights(m);
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                char ch=matrix[i][j];
+                heights[j]=ch=='1'?heights[j]+1:0;
+            }
+            maxRec=max(maxRec,largestRectangle(heights));
+        }
+        return maxRec;
+    }
+    
+    //Code-2
+    int largestRectangle(vector<int>& heights){
+        int i=0;
+        int n=heights.size();
+        stack<int>st;
+        st.push(-1);
+        int largestRec=0;
+        while(i<n){
+            while(st.top()!=-1 && heights[i]<=heights[st.top()]){
+                int idx=st.top();
+                st.pop();
+                int h=heights[idx];
+                int w=i-st.top()-1;
+                largestRec=max(largestRec, h*w);
+            }
+            st.push(i++);
+        }
+        while(st.top()!=-1){
+            int idx=st.top();
+            st.pop();
+            int h=heights[idx];
+            int w=n-st.top()-1;
+            largestRec=max(largestRec,h*w);
+        }
+        return largestRec;
+    }
+    
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if(matrix.size()==0||matrix[0].size()==0) return 0;
+        int maxRec=0;
+        int n=matrix.size();
+        int m=matrix[0].size();
+        vector<int> heights(m);
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                char ch=matrix[i][j];
+                heights[j]=ch=='1'?heights[j]+1:0;
+            }
+            maxRec=max(maxRec,largestRectangle(heights));
+        }
+        return maxRec;
+    }
+
+//
