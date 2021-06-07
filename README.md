@@ -18,3 +18,7 @@ Solved 3 questions of Stacks (minimum remove to make valid parentheses, asteroid
 
 ### Day 6 (06/06/21)
 Solved 6 questions of Stacks (maximal rectangle, remove k digits, remove duplicate letters, longest valid parentheses, min stack, trapping rain water)
+
+### Day 7 (07/06/21)
+
+Revised linked list, stacks and the questions previously done for these topics
