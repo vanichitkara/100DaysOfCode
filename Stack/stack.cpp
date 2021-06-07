@@ -514,4 +514,27 @@ stack<long long> st;
     }
 
 //https://leetcode.com/problems/trapping-rain-water
-//Approach-
+//Approach 1-Find the left maximum height and right maximum height for all elements to make them the boundaries between which the water will be stored. 
+//Find the total water by finding the minimum between left max height and right max height for each index and subtracting the height od building at that index
+
+int trap(vector<int>& height) {
+        int n=height.size();
+        vector<int> lHeight(n,0), rHeight(n,0);
+        int prev=0;
+        for(int i=0; i<n; i++){
+            lHeight[i]=max(height[i],prev);
+            prev=lHeight[i];
+        }
+        prev=0;
+        for(int i=n-1; i>=0; i--){
+            rHeight[i]=max(height[i],prev);
+            prev=rHeight[i];
+        }
+        int totalWater=0;
+        for(int i=0; i<n; i++){
+            totalWater+=min(lHeight[i],rHeight[i])-height[i];
+        }
+        return totalWater;
+    }
+
+//Approach 2-
