@@ -472,3 +472,46 @@ int longestValidParentheses(string s) {
         }
        return len; 
     }
+
+//https://leetcode.com/problems/min-stack/
+//Approach-To retrace the previous minimum element, we store the encoded form of the minimum element found. The first element is pushed and is made the min, 
+//The bigger elements are stored as it is, the next smaller element encountered is stored as 2(val)-min, so that when we pop this element out, we can retrace
+//the minimum element before this value was encountered and assign min variable with that number.
+
+stack<long long> st;
+    long long min=0;
+    
+    void push(int val) {
+        if(st.empty()){
+            st.push(val);
+            min=val;
+        }
+        else{
+            if (val<min){
+                st.push(val+(val-min));
+                min=val;
+            }
+            else st.push(val);
+        }
+    }
+    
+    void pop() {
+        if(st.top()<min){
+            min=min+(min-st.top());
+        }
+        st.pop();
+    }
+    
+    int top() {
+        if(st.top()<min){
+            return min;
+        }
+        return (int)st.top();
+    }
+    
+    int getMin() {
+        return (int)min;
+    }
+
+//https://leetcode.com/problems/trapping-rain-water
+//Approach-
