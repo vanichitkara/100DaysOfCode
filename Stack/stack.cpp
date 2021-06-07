@@ -537,4 +537,25 @@ int trap(vector<int>& height) {
         return totalWater;
     }
 
-//Approach 2-
+//Approach 2-The indexes of heights are pushed in stack till the top of stack is less than or equal to the height of index encountered. When a smaller or equal
+//height is encountered, the index at top of stack is popped out and the width is calculated by (current index-current top of stack-1). This width is multiplied
+//with the ((minimum out of height at current index and height of stack top)-height at the popped out index) and the total water is added till stack is empty
+// height at current index is the right boundary and height of stack top is the left boundary for the height at popped out index
+
+int trap(vector<int>& height) {
+        stack<int> st;
+        int totalWater=0;
+        int n=height.size();
+        for(int i=0; i<n; i++){
+            while(st.size()!=0 && height[st.top()]<=height[i]){
+                int idx=st.top();
+                st.pop();
+                if(st.size()==0) break;
+                int w=i-st.top()-1;
+                int h=height[idx];
+                totalWater+=w*(min(height[st.top()],height[i])-h);
+            }
+            st.push(i);
+        }
+        return totalWater;
+    }
