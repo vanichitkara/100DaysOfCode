@@ -559,3 +559,20 @@ int trap(vector<int>& height) {
         }
         return totalWater;
     }
+
+//Appraoch 3- The left index l starts from 0 and right index r starts from size-1 index. While left index is smaller than right index, we calculate the left and
+//right boundary for heights at the current left and right index respectively. If left boundary is smaller, the height of current left index is subtracted from 
+//left boundary and added to the total water and the left pointer is moved ahead. Else if right boundary is smaller, height of current right index is subtracted 
+//from the right boundary and added to total water, and the right index is moved one step back.
+
+int trap(vector<int>& height) {
+        int lmax=0, rmax=0;
+        int n=height.size();
+        int l=0, r=n-1,totalWater=0 ;
+        while(l<r){
+            lmax=max(lmax,height[l]);
+            rmax=max(rmax,height[r]);
+            totalWater+=lmax<rmax? lmax-height[l++] : rmax-height[r--];
+        }
+        return totalWater;
+    }
