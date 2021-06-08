@@ -22,3 +22,6 @@ Solved 6 questions of Stacks (maximal rectangle, remove k digits, remove duplica
 ### Day 7 (07/06/21)
 
 Revised linked list, stacks and the questions previously done for these topics
+
+### Day 8
+Started with Hashmap and Heaps, revised theory
