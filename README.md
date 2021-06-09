@@ -25,3 +25,6 @@ Revised linked list, stacks and the questions previously done for these topics
 
 ### Day 8 (08/06/21)
 Started with Hashmap and Heaps, revised theory
+
+### Day 9 (09/06/21)
+Solved 3 questions of Hashmaps and Heaps (Kth largest element in an array, Kth largest element in a stream, intersection of two arrays)
