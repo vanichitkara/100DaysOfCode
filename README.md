@@ -28,3 +28,6 @@ Started with Hashmap and Heaps, revised theory
 
 ### Day 9 (09/06/21)
 Solved 3 questions of Hashmaps and Heaps (Kth largest element in an array, Kth largest element in a stream, intersection of two arrays)
+
+### Day 10 (10/06/21)
+Solved 4 questions of Hashmaps and Heaps (intersection of two arrays II, top K frequent elements, longest consecutive sequence, K closest points to origin)
