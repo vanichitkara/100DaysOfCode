@@ -53,3 +53,98 @@ vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
         }
         return res;
     }
+
+//https://leetcode.com/problems/intersection-of-two-arrays-ii/
+//Approach- Same as intersection of two arrays, but here duplicate elements are allowd so instead of removing the element from set after inserting it in the vector,
+//its frequency can be reduced and it should be added again till the freqeuency of the element becomes zero
+
+vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> res;
+        unordered_map<int,int> map;
+        for(int i=0; i<nums1.size(); i++){
+            map[nums1[i]]++;
+        }
+        for(int i=0; i<nums2.size(); i++){
+            if(map[nums2[i]]>0){
+                res.push_back(nums2[i]);
+                map[nums2[i]]--;
+            }
+        }
+        return res;
+    }
+
+//https://leetcode.com/problems/top-k-frequent-elements/
+//Approach- Elements are added in their map and their frequency is counted and added. The frequency and value pair is pushed into a priority queue and the element
+//having the least frequency will be popped out everytime size of queue will be greater than K. All the elements present in the queue after the iteration are
+//iterated again and the values from the frequency value pairs in the queue is pushed into a new vector which is returned as the answer
+
+vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> map;
+        for(int ele:nums) map[ele]++;
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        for(pair<int,int> p: map){
+            int val=p.first;
+            int freq=p.second;
+            pq.push({freq,val});
+            if(pq.size()>k) pq.pop();
+        }
+        vector<int> ans;
+        while(pq.size()!=0){
+            vector<int> p=pq.top();
+            pq.pop();
+            int freq=p[0];
+            int val=p[1];
+            ans.push_back(val);
+        }
+        return ans;
+    }
+
+//https://leetcode.com/problems/longest-consecutive-sequence/
+//Approach- The elements are inserted in set and one by one, the elements are iterated and thier immediate left and right elements are searched for in the set.
+//If the element is present, and its left and right immediate elements are also present, we decrement the left ekement and increment the right element and search
+//for them. This goes on till no more immediate left and right elements are found. The lenght of string is found as right element-left element-1. The elements
+//which are found are removed from the set to improve its time complexity
+
+int longestConsecutive(vector<int>& nums) {
+        unordered_set<int> set;
+        for(int ele:nums) set.insert(ele);
+        int len=0;
+        for(int ele:nums){
+            if(!set.count(ele)) continue;
+            int ple=ele-1;
+            int pre=ele+1;
+            set.erase(ele);
+            while(set.find(ple)!=set.end()) set.erase(ple--);
+            while(set.find(pre)!=set.end()) set.erase(pre++);
+            len=max(len,pre-ple-1);
+        }
+        return len;
+    }
+
+//https://leetcode.com/problems/k-closest-points-to-origin/
+//Appraoch- Make a comparator class which compares the distances of two points from the origin. Make a priority queues which works according to this comparator
+//class and removes the point which is farthest from origin when size of queue becomes greater than K. In this way, the K closest elements are present in the queue
+//and they are pushed into a vector and returned as the answer.
+
+class comp{
+        public:
+        bool operator() (const vector<int>& a, const vector<int>& b){
+            int d1=a[0]*a[0]+a[1]*a[1];
+            int d2=b[0]*b[0]+b[1]*b[1];
+            return d2>d1;
+        }
+    };
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        priority_queue<vector<int>, vector<vector<int>>, comp> pq;
+        for(vector<int>&p :points){
+            pq.push(p);
+            if(pq.size()>k) pq.pop();
+        }
+        vector<vector<int>> ans;
+        while(pq.size()!=0){
+            ans.push_back(pq.top());
+            pq.pop();
+        }
+        return ans;
+    }
+
