@@ -242,4 +242,46 @@ vector<stack<int>> v;
         return rv;
     }
 
-//Approach-2 
+//Approach 2-Make a priority queue of pair class which compares the values based on their frequency. The push and pop work the same way as approach 1
+
+class pair{
+        public:
+        int val=0;
+        int freq=0;
+        int idx=0;
+        
+        pair(int val, int freq, int idx){
+            this->val=val;
+            this->freq=freq;
+            this->idx=idx;
+        }
+    };
+    
+    class comp{
+        public:
+        bool operator() (const pair &a, const pair &b)const{
+            if(a.freq==b.freq)
+                return b.idx>a.idx;
+            return b.freq>a.freq;
+        }
+    };
+    
+    unordered_map<int,int> map;
+    priority_queue<pair,vector<pair>,comp>pq;
+    int idx=0;
+    
+    void push(int val) {
+        map[val]++;
+        pq.push(pair(val,map[val],idx++));
+    }
+    
+    int pop() {
+        pair p=pq.top();
+        pq.pop();
+        map[p.val]--;
+        if(map[p.val]==0)
+            map.erase(p.val);
+        return p.val;
+    }
+
+
