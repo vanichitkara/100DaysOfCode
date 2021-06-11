@@ -284,4 +284,42 @@ class pair{
         return p.val;
     }
 
+//https://leetcode.com/problems/trapping-rain-water-ii/
+//Approach- Put all the boundary elements in min priority queue and pop the elements one by one. The popped element's height is set as minBound if it is greater
+//than the existing minBound and add water by subtracting the popped element's height from the minBound. The adjacent elements of the popped element are checked
+//and added to the priority queue if not already visited and water stored above them is not calculated
 
+int trapRainWater(vector<vector<int>>& heightMap) {
+        int n=heightMap.size(), m=heightMap[0].size();
+        vector<vector<bool>> vis(n, vector<bool>(m,false));
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(i==0||j==0||i==n-1||j==m-1){
+                    vis[i][j]=true;
+                    pq.push({heightMap[i][j],i,j});
+                } 
+            }
+        }
+        vector<vector<int>> dir={{-1,0}, {1,0}, {0,1}, {0,-1}};
+        int minBound=0, water=0;
+        while(pq.size()!=0){
+            vector<int> rp=pq.top();
+            pq.pop();
+            int height=rp[0];
+            int i=rp[1];
+            int j=rp[2];
+            minBound=max(minBound,height);
+            water+=minBound-height;
+            for(int d=0; d<4; d++){
+                int r=i+dir[d][0];
+                int c=j+dir[d][1];
+                
+                if (r>=0 && c>=0 && r<n && c<m && !vis[r][c]){
+                    vis[r][c]=true;
+                    pq.push({heightMap[r][c],r,c});
+                }
+            }
+        }
+        return water;
+    }
