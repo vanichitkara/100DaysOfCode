@@ -31,3 +31,6 @@ Solved 3 questions of Hashmaps and Heaps (Kth largest element in an array, Kth l
 
 ### Day 10 (10/06/21)
 Solved 4 questions of Hashmaps and Heaps (intersection of two arrays II, top K frequent elements, longest consecutive sequence, K closest points to origin)
+
+### Day 11 (11/06/21)
+Solved 3 questions of Hashmaps and Heaps (Kth smallest element in sorted matrix, insert delete getrandom O(1), maximum frequency stack)
