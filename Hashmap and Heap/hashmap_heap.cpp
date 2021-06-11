@@ -54,6 +54,8 @@ vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
         return res;
     }
 
+//June 10
+
 //https://leetcode.com/problems/intersection-of-two-arrays-ii/
 //Approach- Same as intersection of two arrays, but here duplicate elements are allowd so instead of removing the element from set after inserting it in the vector,
 //its frequency can be reduced and it should be added again till the freqeuency of the element becomes zero
@@ -148,3 +150,96 @@ class comp{
         return ans;
     }
 
+//June 11
+
+//https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/
+//Approach- Insert the first row of matrix in min priority queue and pop them while k is greater than zero. When first element of first row is popped, first element
+//of second row is added. The elements are added row wise to optimise the space in hashmap and improve time complexity, When k becomes 0, the Kth smallest element
+//is popped out
+
+int kthSmallest(vector<vector<int>>& matrix, int k) {
+        int n=matrix.size(); int m=matrix[0].size();
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        for(int i=0; i<n; i++){
+            pq.push({matrix[i][0],i,0});
+        }
+        int ans;
+        while(k-->0){
+            vector<int> rv=pq.top(); 
+            pq.pop();
+            int val=rv[0];
+            int x=rv[1];
+            int y=rv[2];
+            ans=val;
+            y++;
+            if(y<m) pq.push({matrix[x][y],x,y});
+        }
+        return ans;
+    }
+
+//https://leetcode.com/problems/insert-delete-getrandom-o1/submissions/
+//Approach- Insert the elements if not already present in the vector and keep a track of its index using hashmap. To pop the element in O(1) time, replace the 
+//element to be removed with the last element of the vector and update the indexes accordingly. The pop back the element to be removed from the vector
+
+vector<int> v;
+    unordered_map<int,int> map;
+    
+    bool insert(int val) {
+        if(map.find(val)!=map.end()) return false;
+        v.push_back(val);
+        int idx=v.size()-1;
+        map[val]=idx;
+        return true;
+    }
+    
+    bool remove(int val) {
+        if(map.find(val)!=map.end()){
+            int idx=map[val];
+            int lidx=v.size()-1;
+            v[idx]=v[lidx];
+            map[v[lidx]]=idx;
+            v.pop_back();
+            map.erase(val);
+            return true;
+        }
+        return false;
+    }
+    
+    int getRandom() {
+        int idx=rand() % v.size();
+        return v[idx];
+    }
+
+//https://leetcode.com/problems/maximum-frequency-stack/
+//Approach 1- Maintain a vector of stacks and push elements with frequency=1 in one stack, frequency=2 in another stack and so on. Pop the element with maximum
+//frequency ad reduce its frequency in the hashmap which is maintaining the elements inserted and their frequency. If the stack with maximum freqeuncy value is
+//empty, decrement the maximum freuqency and if frequency of the value is zero, remove the value from the hashmap
+
+vector<stack<int>> v;
+    unordered_map<int,int> map;
+    int maxfreq;
+    FreqStack() {
+        maxfreq=0;
+        v.push_back(stack<int>());
+    }
+    
+    void push(int val) {
+        map[val]++;
+        maxfreq=max(maxfreq,map[val]);
+        if(v.size()==maxfreq)
+            v.push_back(stack<int>());
+        v[map[val]].push(val);
+    }
+    
+    int pop() {
+        int rv=v[maxfreq].top();
+        v[maxfreq].pop();
+        map[rv]--;
+        if(v[maxfreq].size()==0)
+            maxfreq--;
+        if(map[rv]==0)
+            map.erase(rv);
+        return rv;
+    }
+
+//Approach-2 
