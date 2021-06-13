@@ -323,3 +323,186 @@ int trapRainWater(vector<vector<int>>& heightMap) {
         }
         return water;
     }
+
+//June 12
+
+//https://leetcode.com/problems/swim-in-rising-water/
+//Approach- Push the first element of matrix in the min priority queue. Then pop the element and calculate the minimum height and the time taken so far. Then push the
+//adjacent elements using direction vector and pop the element having smaller height and again calculate the minimum height and time taken to swim. The time taken will
+//depend on the element having maximum height in the chosen path and the goal is to reach in minimum time
+
+class pair{
+        public:
+        int val=0;
+        int i=0;
+        int j=0;
+        
+        pair(int val, int i, int j){
+            this->val=val;
+            this->i=i;
+            this->j=j;
+        }
+    };
+    
+    class comp{
+        public:
+        bool operator() (const pair &a, const pair &b)const{
+            return a.val>b.val;
+        }
+    };
+    int swimInWater(vector<vector<int>>& grid) {
+        int n = grid.size(), m = n;
+        
+        priority_queue<pair, vector<pair>, comp> pq;
+        vector<vector<int>>dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+        vector<vector<bool>> vis (n, vector<bool>(m,false));
+
+        pq.push({grid[0][0],0,0});
+        vis[0][0] = true;
+
+        int minHeight = 0, time = 0;
+
+        while (pq.size() != 0) {
+            pair p = pq.top();
+            pq.pop();
+            int i = p.i, j = p.j;
+            int height = grid[i][j];
+
+            time += max(0, height - minHeight);
+            if (i == n - 1 && j == m - 1)
+                break;
+
+            minHeight = max(minHeight, height);
+
+            for (int d = 0; d < dir.size(); d++) {
+                int r = i + dir[d][0];
+                int c = j + dir[d][1];
+
+                if (r >= 0 && c >= 0 && r < n && c < m && !vis[r][c]) {
+                    vis[r][c] = true;
+                    pq.push({grid[r][c],r,c});
+                }
+            }
+        }
+
+        return time;
+    }
+
+//https://leetcode.com/problems/find-median-from-data-stream/    
+//Approach- Make two priority queues, maxPQ and minPQ. Push the first element in maxPQ and then if the next number encountered is smaller than the top element present 
+//in maxPQ, only then push it in maxPQ else push it in minPQ. If the size difference of max and min PQ is 2, push the element from maxPQ to min PQ and if size difference
+//is -1, push element from minPQ to maxPQ. If size of maxPQ and minPQ is equal, the median is the sum of top elements of max and min PQ divided by 2 or else median is 
+//top of maxPQ
+
+    priority_queue<int> maxPQ;
+    priority_queue<int, vector<int>, greater<int>> minPQ;
+    
+    void addNum(int num) {
+        if (maxPQ.size() == 0 || num <= maxPQ.top())
+            maxPQ.push(num);
+        else
+            minPQ.push(num);
+
+        if (maxPQ.size() - minPQ.size() == 2){
+            minPQ.push(maxPQ.top());
+            maxPQ.pop();
+        }   
+        if (maxPQ.size() - minPQ.size() == -1){
+            maxPQ.push(minPQ.top());
+            minPQ.pop();
+        }
+    }
+    
+    double findMedian() {
+        if (maxPQ.size() == minPQ.size())
+            return ((maxPQ.top() + minPQ.top()) / 2.0);
+        else
+            return maxPQ.top() * 1.0;
+    }
+
+//June 13
+
+//https://leetcode.com/problems/merge-k-sorted-lists/
+//Approach- The elements of the list are pushed in the min priority queue. Then the smallest elements are popped from the queue and are linked to each other
+//and the the resulting list is returned
+
+class comp{
+    public:
+        bool operator()(const ListNode *a, const ListNode *b) const
+        {
+            return a->val > b->val;
+        }
+    };
+
+    ListNode *mergeKLists(vector<ListNode *> lists){
+        priority_queue<ListNode *, vector<ListNode *>, comp> pq;
+
+        for (int i = 0; i < lists.size(); i++)
+            if (lists[i] != nullptr)
+                pq.push(lists[i]);
+
+        ListNode *dummy = new ListNode(-1);
+        ListNode *prev = dummy;
+
+        while (pq.size() != 0)
+        {
+            ListNode *rn = pq.top();
+            pq.pop();
+            prev->next = rn;
+            prev = prev->next;
+
+            if (rn->next != nullptr)
+                pq.push(rn->next);
+        }
+        return dummy->next;
+    }
+
+//https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/
+//Approach- 
+
+class pair{
+        public:
+        int val,x,y;
+        pair(int v,int i,int j){
+            val = v;
+            x = i;
+            y = j;
+        }
+    };
+    class comp{
+        public:
+        bool operator()(const pair &a,const pair &b)const{
+            return a.val>b.val;
+        }
+    };
+    
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        priority_queue<pair, vector<pair>, comp> pq;
+        int n = nums.size();
+        int maxValue = -(int)1e9;
+        for(int i=0;i<n;i++){
+            pq.push({nums[i][0],i,0});
+            maxValue = max(maxValue,nums[i][0]);
+        }
+
+        int range = (int)1e9;
+        int sp = -1, ep = -1;
+
+        while(pq.size() == n){
+            pair re = pq.top(); // re : remove Element
+            pq.pop();
+            int r = re.x, c = re.y, val = nums[r][c];
+            if(maxValue - val < range){
+                range = maxValue - val;
+                sp = val;
+                ep = maxValue;
+            }
+            c++;
+            if(c < nums[r].size()){
+                pq.push({nums[r][c],r,c});
+                maxValue = max(maxValue,nums[r][c]);
+            }            
+        }
+        return {sp,ep};
+    }
+
