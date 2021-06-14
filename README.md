@@ -40,3 +40,6 @@ Solved 2 questions of Hashmaps and Heaps (swim in rising water, find median from
 
 ### Day 13 (13/06/21)
 Solved 2 questions of Hashmaps and Heaps (merge K sorted lists, smallest range covering from K lists)
+
+### Day 14 (14/06/21)
+Solved 5 questons of Binary Trees (size, height, maximum and minimum element, sum of binary tree, find data in binary tree)
