@@ -458,7 +458,10 @@ class comp{
     }
 
 //https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/
-//Approach- 
+//Approach- Insert the first elements of each of the given list and compute the maximum out of them. The smallest out of the inserted elements is popped out and
+//the range, the starting and ending point of the range is calculated. Then the next element from the list to whcih the removed element belonged to is inserted
+//and the same parameters are calculated again till the size of priority queue becomes less than the number of lists, which means one of the given lists is 
+//exhausted and the starting and ending points are returned
 
 class pair{
         public:
