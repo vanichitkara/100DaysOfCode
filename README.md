@@ -36,7 +36,7 @@ Solved 4 questions of Hashmaps and Heaps (intersection of two arrays II, top K f
 Solved 4 questions of Hashmaps and Heaps (Kth smallest element in sorted matrix, insert delete getrandom O(1), maximum frequency stack, trapping rain water II)
 
 ### Day 12 (12/06/21)
-Solved 2 questions of Hashmaps and Heaps (swim in rising water, find median fromdata stream)
+Solved 2 questions of Hashmaps and Heaps (swim in rising water, find median from data stream)
 
 ### Day 13 (13/06/21)
 Solved 2 questions of Hashmaps and Heaps (merge K sorted lists, smallest range covering from K lists)
