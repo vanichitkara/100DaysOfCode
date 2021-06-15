@@ -43,3 +43,6 @@ Solved 2 questions of Hashmaps and Heaps (merge K sorted lists, smallest range c
 
 ### Day 14 (14/06/21)
 Solved 5 questons of Binary Trees (size, height, maximum and minimum element, sum of binary tree, find data in binary tree)
+
+### Day 15 (15/06/21)
+Solved 6 questions of Binary Trees (root to leaf path, lowest common ancestor, inorder, preorder, postorder and level order traversal)
