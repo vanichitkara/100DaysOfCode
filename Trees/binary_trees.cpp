@@ -197,3 +197,104 @@ vector<vector<int>> levelOrder(TreeNode* root) {
         return ans;
     }
 
+//https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
+//Approach- if root is equal to target node, print K down with no block node. Then print K down in left subtree and block the left sub tree if the left sub tree
+//is not null and then print the rest of the K down. Do the same for right subtree. Push the K down values in the vector and return the answer vector
+
+void printKDown (TreeNode* root, TreeNode* block, int depth, vector<int>& ans){
+        if(root==NULL || depth<0 ||root==block)
+            return;
+        
+        if(depth==0){
+            ans.push_back(root->val);
+            return;
+        }
+        
+        printKDown(root->left, block, depth-1, ans);
+        printKDown(root->right, block, depth-1, ans);
+    }
+    int distanceK(TreeNode* root, TreeNode* target, int k, vector<int>& ans){
+        if(root==NULL) return -1;
+        
+        if(root==target){
+            printKDown(root,NULL,k,ans);
+            return 1;
+        }
+        
+        int lans=distanceK(root->left, target, k, ans);
+        if(lans!=-1){
+            printKDown(root,root->left,k-lans,ans);
+            return lans+1;
+        }
+        
+        int rans=distanceK(root->right, target, k, ans);
+        if(lans!=-1){
+            printKDown(root,root->right,k-rans,ans);
+            return rans+1;
+        }
+        
+        return -1;
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        if(root==NULL) return {};
+        vector<int> ans;
+        distanceK (root,target,k,ans);
+        return ans;
+    }
+
+//https://leetcode.com/problems/diameter-of-binary-tree/
+//Approach- Calculate the diameter of left and right subtree and compare it with the sum of left height + right height + 2 (for the two edges of the root). Return
+//the maximum value out of the three calculated values as the diameter of the tree
+
+int height(TreeNode* root){
+        return root==NULL?-1 : max(height(root->left),height(root->right))+1;
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(root==NULL) return -1;
+        int leftDia=diameterOfBinaryTree(root->left);
+        int rightDia=diameterOfBinaryTree(root->right);
+        int leftheight=height(root->left);
+        int rightheight=height(root->right);
+        return max(max(leftDia,rightDia), leftheight+rightheight+2);
+    }
+
+//https://leetcode.com/problems/path-sum/
+//Approach- if root is null, return false. if root has no left and right subtree, return true if targetSum is equal to the root value, return false if otherwise.
+//Then check for the path sum in left ans right subtree, and return true if the root to leaf path sum is available, else return false
+
+bool hasPathSum(TreeNode* root, int targetSum) {
+        if(root==NULL){
+            return false;
+        }
+        if(root->left==NULL&&root->right==NULL){
+            return (targetSum-root->val==0);
+        }
+        return hasPathSum(root->left, targetSum-root->val)||hasPathSum(root->right, targetSum-root->val);
+    }
+
+//https://leetcode.com/problems/path-sum-ii/
+//Approach- The approach is same as path sum, but here we store the path sum in the smallAns vector, and then store the smallAns in result vector and empty the
+//smallAns vector to store another path sum and push it again to result vector. Return all the path sums in the tree
+
+void pathSum(TreeNode* root, int targetSum, vector<vector<int>>& res, vector<int>& smallAns){
+        if(root==NULL)
+            return;
+        if(root->left==NULL && root->right==NULL){
+            if(targetSum-root->val==0){
+                smallAns.push_back(root->val);
+                res.push_back(smallAns);
+                smallAns.pop_back();
+            }
+            return;
+        }
+        smallAns.push_back(root->val);
+        pathSum(root->left, targetSum-root->val,res,smallAns);
+        pathSum(root->right, targetSum-root->val,res,smallAns);
+        smallAns.pop_back();
+    }
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> res;
+        vector<int> smallAns;
+        pathSum(root,targetSum,res,smallAns);
+        return res;
+    }
