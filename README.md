@@ -46,3 +46,6 @@ Solved 5 questons of Binary Trees (size, height, maximum and minimum element, su
 
 ### Day 15 (15/06/21)
 Solved 6 questions of Binary Trees (root to leaf path, lowest common ancestor, inorder, preorder, postorder and level order traversal)
+
+### Day 16 (16/06/21)
+Solved 4 questions of Binary Trees (All nodes distance K, diameter, path sum, path sum II)
