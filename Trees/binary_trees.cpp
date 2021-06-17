@@ -298,3 +298,90 @@ void pathSum(TreeNode* root, int targetSum, vector<vector<int>>& res, vector<int
         pathSum(root,targetSum,res,smallAns);
         return res;
     }
+
+//https://practice.geeksforgeeks.org/problems/maximum-path-sum/1#
+//Approach- If root has no subtrees, return the value of the root. Find the maximum path sum in left and right sub tree and compare it with sum from one leaf node 
+//to another. If left or rigth subtree is absent, the maximum of left and right node to leaf sum is added to the root's value. The maximum path sum is stored in 
+//the maxLeafToLeaf variable and is returned as the answer
+
+int maxLeafToLeaf= -(int)1e9;
+    int maxPathSum_(Node* root)
+    {
+        // code here
+        if(root==NULL) 
+        return -(int)1e9;
+        if(root->left==NULL&&root->right==NULL) 
+        return root->data;
+        int leftNodeToLeafMaxSum=maxPathSum_(root->left);
+        int rightNodeToLeafMaxSum=maxPathSum_(root->right);
+        if(root->left!=NULL&&root->right!=NULL){
+            maxLeafToLeaf=max(maxLeafToLeaf,leftNodeToLeafMaxSum+rightNodeToLeafMaxSum+root->data);
+        }
+        return max(leftNodeToLeafMaxSum,rightNodeToLeafMaxSum)+root->data;
+    }
+    int maxPathSum(Node* root){
+        if(root==NULL) return -(int)1e9;
+        maxPathSum_(root);
+        return maxLeafToLeaf;
+    }
+
+//https://leetcode.com/problems/binary-tree-maximum-path-sum/
+//Approach- Get left and right subtree's max path sum for the given tree. The max sum till root will be the max of left and right subtree plus the root value. 
+//Compare this with max path sum node to node, root's val and sum of left and right path sum plus the root value. The maximum of all these will be the answer
+
+int maxNTN=-(int)1e9;
+    int maxPathSum_(TreeNode* root){
+        if(root==NULL) return -(int)1e9;
+        int leftPathSum=maxPathSum_(root->left);
+        int rightPathSum=maxPathSum_(root->right);
+        int maxSumTillRoot=max(leftPathSum,rightPathSum)+root->val;
+        maxNTN=max(max(maxNTN,maxSumTillRoot),max(root->val,leftPathSum+rightPathSum+root->val));
+        return max(maxSumTillRoot,root->val);
+    }
+    int maxPathSum(TreeNode* root) {
+        if(root==NULL) return 0;
+        maxPathSum_(root);
+        return maxNTN;
+    }
+
+//https://practice.geeksforgeeks.org/problems/left-view-of-binary-tree/1#
+//Approach- Push the value of root in the queue and while the size of queue is not zero, push back the front element in the answer vector and then pop the 
+//values from the queue and insert their left and right child respectively. The value inserted in the vector are the left view of the tree
+
+vector<int> answer;
+   if(root==NULL) return answer;
+   queue<Node*> que; 
+   que.push(root);
+   while(que.size()!=0){
+       int size=que.size();
+       answer.push_back(que.front()->data);
+       while(size-->0){
+            Node* rn=que.front();
+            que.pop();
+            if(rn->left!=NULL) que.push(rn->left);
+            if(rn->right!=NULL) que.push(rn->right);
+       }
+   }
+   return answer;
+
+//https://practice.geeksforgeeks.org/problems/right-view-of-binary-tree/1#
+//https://leetcode.com/problems/binary-tree-right-side-view/
+//Approach- The apporach is same as the left view of binary tree but here the right child is pushed before the left child so it becomes the front element of the 
+//queue which is inserted into the answer vector
+
+vector<int> answer;
+        if(root==NULL) return answer;
+        queue<Node*> que; 
+        que.push(root);
+        while(que.size()!=0){
+            int size=que.size();
+            answer.push_back(que.front()->data);
+            while(size-->0){
+                Node* rn=que.front();
+                que.pop();
+                if(rn->right!=NULL) que.push(rn->right);
+                if(rn->left!=NULL) que.push(rn->left);
+           }
+       }
+       return answer;
+    }
