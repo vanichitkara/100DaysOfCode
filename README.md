@@ -49,3 +49,6 @@ Solved 6 questions of Binary Trees (root to leaf path, lowest common ancestor, i
 
 ### Day 16 (16/06/21)
 Solved 4 questions of Binary Trees (All nodes distance K, diameter, path sum, path sum II)
+
+### Day 17 (17/06/21)
+Solved 4 questions of Binary Trees (Maximum Path Sum between 2 Leaf Nodes, Binary Tree Maximum Path Sum, Left View of Binary Tree, Right View of Binary Tree)
