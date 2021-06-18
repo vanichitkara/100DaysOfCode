@@ -52,3 +52,6 @@ Solved 4 questions of Binary Trees (All nodes distance K, diameter, path sum, pa
 
 ### Day 17 (17/06/21)
 Solved 4 questions of Binary Trees (Maximum Path Sum between 2 Leaf Nodes, Binary Tree Maximum Path Sum, Left View of Binary Tree, Right View of Binary Tree)
+
+### Day 18 (18/06/21)
+Solved 3 questions of Binary Trees (Vertical order traversal, Bottom view of tree, vertical sum)
