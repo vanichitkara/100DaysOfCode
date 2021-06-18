@@ -53,6 +53,8 @@ long int sumBT(Node* root){
     return leftSum+rightSum+root->key;
 }
 
+//June 15
+
 //https://leetcode.com/problems/binary-tree-paths/
 //Approach- If the root is null, return empty string. If the root has no child, just add the value of root an return. If the root has children, enter the value of
 //the root followed by an arrow, then call on left and right children. The string will be filled with all the root to node paths, push it in the vector and return
@@ -197,6 +199,8 @@ vector<vector<int>> levelOrder(TreeNode* root) {
         return ans;
     }
 
+//June 16
+
 //https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/
 //Approach- if root is equal to target node, print K down with no block node. Then print K down in left subtree and block the left sub tree if the left sub tree
 //is not null and then print the rest of the K down. Do the same for right subtree. Push the K down values in the vector and return the answer vector
@@ -299,6 +303,8 @@ void pathSum(TreeNode* root, int targetSum, vector<vector<int>>& res, vector<int
         return res;
     }
 
+//June 17
+
 //https://practice.geeksforgeeks.org/problems/maximum-path-sum/1#
 //Approach- If root has no subtrees, return the value of the root. Find the maximum path sum in left and right sub tree and compare it with sum from one leaf node 
 //to another. If left or rigth subtree is absent, the maximum of left and right node to leaf sum is added to the root's value. The maximum path sum is stored in 
@@ -385,3 +391,197 @@ vector<int> answer;
        }
        return answer;
     }
+
+//June 18
+
+//https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+//Approach 1- A vertical{air class is made to maintain the value of root along with its horizontal level. A queue of verticalPair elements is made and root's value is 
+//inserted along with 0 as its horizontal level. Nodes on the left of root have negative horizontal level and right of root have positive horizontal level
+//Then the elements of que are popped, and are mapped in hashmap with their horizontal levels and their left and right child are inserted till the whole tree is
+//traversed. Then all the elements in the hashmap are inserted in a result vector according to increading order of the horizontal level
+
+class verticalPair{
+        public:
+        TreeNode* node=NULL;
+        int hl=0;
+        
+        verticalPair(TreeNode* node, int hl){
+            this->node=node;
+            this->hl=hl;
+        }
+    };
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        queue<verticalPair> que;
+        que.push(verticalPair(root,0));
+        int minhl=0, maxhl=0;
+        unordered_map<int,vector<int>> map;
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                verticalPair rp=que.front();
+                que.pop();
+                map[rp.hl].push_back(rp.node->val);
+                minhl=min(minhl,rp.hl);
+                maxhl=max(maxhl,rp.hl);
+                if(rp.node->left!=NULL){
+                    que.push(verticalPair(rp.node->left,rp.hl-1));
+                }
+                if(rp.node->right!=NULL){
+                    que.push(verticalPair(rp.node->right,rp.hl+1));
+                }
+            }
+        }
+        vector<vector<int>> res;
+        while(minhl<=maxhl){
+            res.push_back(map[minhl++]);
+        }
+        return res;
+    }
+
+//Approach 2- A vertical pair class is made, which has the node, it's horizontal and vertical level denoted by x and y respectively. Length is also calculated which
+//is maximum horizontal level-minimum horizontal level+1. It is used to declare the size of the result vector. This time a priority queue is made so that the 
+//smaller number gets inserted first into the result vector which was not the case with the previous approach. The rest is the same as Approach 1
+
+class verticalPair{
+        public:
+        TreeNode* node=NULL;
+        int x=0;
+        int y=0;
+        
+        verticalPair(TreeNode* node, int x, int y){
+            this->node=node;
+            this->x=x;
+            this->y=y;
+        }
+    };
+    struct comp{
+        public:
+        bool operator()(const verticalPair a, const verticalPair b)const{
+            if(a.y!=b.y)
+                return a.y>b.y;
+            else
+                return a.node->val>b.node->val;
+        }  
+    };
+    void width(TreeNode* root, int hl, vector<int>&ans){
+        if(root==NULL) return;
+        ans[0]=min(hl,ans[0]);
+        ans[1]=max(hl,ans[1]);
+        
+        width(root->left,hl-1,ans);
+        width(root->right,hl+1,ans);
+    }
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        priority_queue<verticalPair, vector<verticalPair>, comp> que;
+        vector<int> minMax(2,0);
+        width(root,0,minMax);
+        int len=minMax[1]-minMax[0]+1;
+        vector<vector<int>> res(len);
+        que.push(verticalPair(root,-minMax[0],0));
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-- > 0){
+                verticalPair rp=que.top();
+                que.pop();
+                res[rp.x].push_back(rp.node->val);
+                if(rp.node->left!=NULL){
+                    que.push(verticalPair(rp.node->left,rp.x-1,rp.y+1));
+                }
+                if(rp.node->right!=NULL){
+                    que.push(verticalPair(rp.node->right,rp.x+1,rp.y+1));
+                }
+            }
+        }
+        return res;
+    }
+
+//https://practice.geeksforgeeks.org/problems/bottom-view-of-binary-tree/1#
+//Approach- Almost the same as vertical order traversal, but here the result vector keeps updating to the bottom most value find till now as we traverse the tree
+//When the whole tree is traversed, the res vector will hold the bottom most values for its respective horizontal level on the indexes.
+
+class verticalPair{
+    public:
+    Node* node=NULL;
+    int hl=0;
+    verticalPair(Node* node, int hl){
+        this->node=node;
+        this->hl=hl;
+    }
+};
+void width(Node* root, int hl, vector<int>& ans){
+    if(root==NULL) return;
+    ans[0]=min(hl,ans[0]);
+    ans[1]=max(hl,ans[1]);
+    width(root->left,hl-1,ans);
+    width(root->right,hl+1,ans);
+}
+vector <int> bottomView(Node *root)
+{
+   queue<verticalPair>que;
+   vector<int>minMax(2,0);
+   width(root,0,minMax);
+   int len=minMax[1]-minMax[0]+1;
+   vector<int> res(len,0);
+   que.push(verticalPair(root,-minMax[0]));
+   while(que.size()!=0){
+       int size=que.size();
+       while(size-- > 0){
+           verticalPair rp=que.front();
+           que.pop();
+           res[rp.hl]=rp.node->data;
+           if(rp.node->left!=NULL){
+               que.push(verticalPair(rp.node->left,rp.hl-1));
+           }
+           if(rp.node->right!=NULL){
+               que.push(verticalPair(rp.node->right,rp.hl+1));
+           }
+       }
+   }
+   return res;
+}
+
+//https://practice.geeksforgeeks.org/problems/vertical-sum/1
+//Approach- It is the same as bottom view but when the tree is traversed, instead of replacing the old bottom most value with the new one for the same level, we
+//add there values and keep them stored on the index corresponding to their horizontal level
+
+class verticalPair{
+        public:
+        Node* node=NULL;
+        int hl=0;
+        verticalPair(Node* node, int hl){
+            this->node=node;
+            this->hl=hl;
+        }
+    };
+    void width(Node* root, int hl, vector<int>& ans){
+        if(root==NULL) return;
+        ans[0]=min(hl,ans[0]);
+        ans[1]=max(hl,ans[1]);
+        width(root->left,hl-1,ans);
+        width(root->right,hl+1,ans);
+    }
+    vector <int> verticalSum(Node *root) {
+        // add code here.
+        queue<verticalPair> que;
+        vector<int> minMax(2,0);
+        width(root,0,minMax);
+        int len=minMax[1]-minMax[0]+1;
+        vector<int> res(len,0);
+        que.push(verticalPair(root,-minMax[0]));
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                verticalPair rp=que.front();
+                que.pop();
+                res[rp.hl]+=rp.node->data;
+                if(rp.node->left!=NULL)
+                que.push(verticalPair(rp.node->left,rp.hl-1));
+                if(rp.node->right!=NULL)
+                que.push(verticalPair(rp.node->right,rp.hl+1));
+            }
+        }
+        return res;
+    }
+
+//https://practice.geeksforgeeks.org/problems/diagonal-traversal-of-binary-tree/1
+//
