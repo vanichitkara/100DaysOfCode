@@ -583,5 +583,100 @@ class verticalPair{
         return res;
     }
 
+//June 19
+
 //https://practice.geeksforgeeks.org/problems/diagonal-traversal-of-binary-tree/1
-//
+//Approach- Push the root in a queue and pop the queue elements till the size of queue becomes zero. If the left subtree of the popped element exists, push that
+//in the queue. Move the temp pointer to the right child of popped element and keep pushing them in the answer vector till temp becomes NULL. push the answer vector
+//in the result vector and again back to a new 1D answer vector that is to be returned
+
+vector<int> diagonal(Node *root)
+{
+   // your code here
+   if(root==NULL) return {};
+   vector<vector<int>> result;
+   queue<Node*> que;
+   que.push(root);
+   while(que.size()!=0){
+       int size=que.size();
+       vector<int> answer;
+       while(size-->0){
+           Node* temp=que.front();
+           que.pop();
+           while(temp){
+               answer.push_back(temp->data);
+               if(temp->left)
+               que.push(temp->left);
+               temp=temp->right;
+            }
+       }   
+       result.push_back(answer);
+   }
+   vector<int> answer;
+   for(int i=0; i<result.size(); i++){
+       for(int j=0; j<result[i].size(); j++){
+           int a=result[i][j];
+           answer.push_back(a);
+       }
+   }
+   return answer;
+}
+
+//https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
+//Approach- Put idx on the position where the tree root is located. According to the preorder traversal, the root is the first element of the traversal. So move
+//idx till it reaches the root in inorder traversal. Calculate the total number of elements in the left subtree by subtracting the starting point of inorder 
+//traversal by the idx of root in inorder traversal. Then pass the array to left and right subtree of the root according to the calculated values.
+
+TreeNode* buildTree(vector<int>& preorder, int psi, int pei, vector<int>& inorder, int isi, int iei){
+        if(psi>pei) return NULL;
+        int idx=isi;
+        TreeNode* root=new TreeNode(preorder[psi]);
+        while(inorder[idx]!=preorder[psi]) idx++;
+        int tnel=idx-isi;
+        root->left=buildTree(preorder,psi+1,psi+tnel,inorder,isi,idx-1);
+        root->right=buildTree(preorder,psi+tnel+1,pei,inorder,idx+1,iei);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        return buildTree(preorder,0,preorder.size()-1,inorder,0,inorder.size()-1);
+    }
+
+//https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+//Approach- Same as constructing tree from inorder and preorder traversal, but here the root is at the end of the postorder traversal, so idx and tnel and the
+//passed values in the recursion will change accordingly
+
+TreeNode* buildTree(vector<int>& postorder, int psi, int pei, vector<int>& inorder, int isi, int iei){
+        if(psi>pei) return NULL;
+        TreeNode* root=new TreeNode(postorder[pei]);
+        int idx=isi;
+        while(inorder[idx]!=postorder[pei]) idx++;
+        int tnel=idx-isi;
+        root->left=buildTree(postorder, psi, psi+tnel-1, inorder, isi, idx-1);
+        root->right=buildTree(postorder,psi+tnel, pei-1, inorder,idx+1, iei);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int n=postorder.size();
+        return buildTree(postorder, 0 ,n-1, inorder, 0, n-1);
+    }
+
+//https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/
+//Approach- Here the root is present at the start of preorder traversal and at the end of postorder traversal. The number of elements in the left subtree are
+//calaculated by taking idx to the place where the last element of left subtree is present and then subtracting starting point of postorder from idx+1.
+//The values are passed accordingly to calculate the left and right subtree
+
+TreeNode* buildTree(vector<int>&pre, int psi, int pei, vector<int>& post, int ppsi, int ppei){
+        if(psi>pei) return NULL;
+        int idx=ppsi;
+        TreeNode* root=new TreeNode(pre[psi]);
+        if(psi==pei) return root;
+        while(pre[psi+1]!=post[idx]) idx++;
+        int tnel=idx-ppsi+1;
+        root->left=buildTree(pre,psi+1, psi+tnel, post, ppsi, idx);
+        root->right=buildTree(pre,psi+tnel+1,pei,post,idx+1,ppei-1);
+        return root;
+    }
+    TreeNode* constructFromPrePost(vector<int>& pre, vector<int>& post) {
+        int n=pre.size();
+        return buildTree(pre,0,n-1,post,0,n-1);
+    }
