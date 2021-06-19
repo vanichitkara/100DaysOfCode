@@ -55,3 +55,6 @@ Solved 4 questions of Binary Trees (Maximum Path Sum between 2 Leaf Nodes, Binar
 
 ### Day 18 (18/06/21)
 Solved 3 questions of Binary Trees (Vertical order traversal, Bottom view of tree, vertical sum)
+
+### Day 19 (19/06/21)
+Solved 4 questions of Binary Trees (Diagonal traversal, constructing binary tree from preorder, inorder and postorder traversal taken 2 at a time)
