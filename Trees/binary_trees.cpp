@@ -680,3 +680,49 @@ TreeNode* buildTree(vector<int>&pre, int psi, int pei, vector<int>& post, int pp
         int n=pre.size();
         return buildTree(pre,0,n-1,post,0,n-1);
     }
+
+//June 20
+
+//https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+//Approach 1- Call the flatten function on both left and right tree so that they both are flattened individually. Then traverse the left subtree to get its tail
+//node. Then join the right subtree to the tail and then shift the left subtree to the right subtree and make the root's left null
+
+TreeNode* getTail(TreeNode* root){
+        if(root==NULL) return root;
+        TreeNode* curr= root;
+        while(curr->right!=NULL){
+            curr=curr->right;
+        }
+        return curr;
+    }
+    void flatten(TreeNode* root) {
+        if(root==NULL) return;
+        flatten(root->left);
+        flatten(root->right);
+        TreeNode* tail=getTail(root->left);
+        if(tail!=NULL){
+            tail->right=root->right;
+            root->right=root->left;
+            root->left=NULL;
+        }
+    }
+
+//Approach 2- Same as approach 1 but with a better time complexity
+
+TreeNode* flatten1(TreeNode* root){
+        if(root==NULL||(root->left==NULL && root->right==NULL)) return root;
+        TreeNode* leftTail=flatten1(root->left);
+        TreeNode* rightTail=flatten1(root->right);
+        
+        if(leftTail!=NULL){
+            leftTail->right=root->right;
+            root->right=root->left;
+            root->left=NULL;
+        }
+        return rightTail==NULL? leftTail:rightTail;
+    }
+    void flatten(TreeNode* root) {
+        if(root==NULL) return;
+        flatten1(root);
+    }
+
