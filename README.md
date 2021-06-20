@@ -58,3 +58,6 @@ Solved 3 questions of Binary Trees (Vertical order traversal, Bottom view of tre
 
 ### Day 19 (19/06/21)
 Solved 4 questions of Binary Trees (Diagonal traversal, constructing binary tree from preorder, inorder and postorder traversal taken 2 at a time)
+
+### Day 20 (20/06/21)
+Solved 1 question of Binary Trees(flatten a binary tree into a linked list)
