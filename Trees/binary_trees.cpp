@@ -782,4 +782,45 @@ Node* head=NULL;
     return head;
     }
 
-//
+//https://leetcode.com/problems/serialize-and-deserialize-binary-tree/
+//Approach- First serialize the tree by inserting the value of the nodes in a string and if null is encountered, insert -1001 in the string to identify roots with
+//left or right subtree as null. To deserialize the tree, if -1001 is encountered, the index is moved forward and the first non null node is made as root and its
+//left and right child are attached by recursion and so are the left and right subtrees populated
+
+// Encodes a tree to a single string.
+    void serialize (TreeNode* root, string& sb){
+        if(root==NULL){
+            sb+=("-1001 ");
+            return;
+        }
+        sb+=to_string(root->val)+" ";
+        serialize(root->left,sb);
+        serialize(root->right,sb);
+    }
+    string serialize(TreeNode* root) {
+        string ans="";
+        serialize(root, ans);
+        return ans;
+    }
+
+    // Decodes your encoded data to tree.
+    int idx=0;
+    TreeNode* deserialize(vector<int>& arr){
+        if(idx>=arr.size()||arr[idx]==-1001){
+            idx++;
+            return NULL;
+        }
+        TreeNode* node= new TreeNode(arr[idx++]);
+        node->left=deserialize(arr);
+        node->right=deserialize(arr);
+        return node;
+    }
+    TreeNode* deserialize(string data) {
+        stringstream ss(data);
+        string word;
+        vector<int> arr;
+        while(ss>>word){
+            arr.push_back(stoi(word));
+        }
+        return deserialize(arr);
+    }
