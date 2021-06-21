@@ -726,3 +726,60 @@ TreeNode* flatten1(TreeNode* root){
         flatten1(root);
     }
 
+//June 21
+
+//https://practice.geeksforgeeks.org/problems/binary-tree-to-dll/1#
+//Approach- Call the function on left subtree to make it a doubly linked list first. Here the left most node is made prev->right and the node's left is prev, then
+//prev moves to node and it attaches itself the same way to the root of the left most node, then the root of the leftmost node is attached to its right node in 
+//the same way. Then the root of the tree is attached to the rightmost node of left tree and its right pointer is attached to the left most node of right subtree
+//The right subtree is also converted into doubly linked list the same way as the left subtree. The head of the doubly linked is returned which is the leftmost
+//node of the whole tree
+
+Node* prev=NULL;
+Node* head=NULL;
+    void bToDLL1(Node* root){
+        if(root==NULL) return;
+        bToDLL1(root->left);
+        if(head==NULL) head=root;
+        else{
+            prev->right=root;
+            root->left=prev;
+        }
+        prev=root;
+        bToDLL1(root->right);
+    }
+    Node* bToDLL(Node *root)
+    {
+        // your code here
+        if(root==NULL) return root;
+        bToDLL1(root);
+        return head;
+    }
+
+//https://practice.geeksforgeeks.org/problems/binary-tree-to-cdll/1
+//Approach- The same as doubly linked list, but here the head is connected to the previous node and previous is connected to head node to make the list circular
+
+Node* prev=NULL;
+Node* head=NULL;
+    void bTreeToCList1(Node* root){
+        if(root==NULL) return;
+        bTreeToCList1(root->left);
+        if(head==NULL) head=root;
+        else{
+            prev->right=root;
+            root->left=prev;
+        }
+        prev=root;
+        bTreeToCList1(root->right);
+    }
+    Node *bTreeToCList(Node *root)
+    {
+    //add code here.
+    if(root==NULL) return root;
+    bTreeToCList1(root);
+    prev->right=head;
+    head->left=prev;
+    return head;
+    }
+
+//
