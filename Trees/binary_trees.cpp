@@ -824,3 +824,80 @@ Node* head=NULL;
         }
         return deserialize(arr);
     }
+
+//June 22
+
+//https://leetcode.com/problems/binary-tree-cameras/
+//Approach- If the root does not have any left or right subtree, only one camera is required for the root. If there is a camera on child node, then the root node 
+//doesn't need a camera. When left or right answer is -1, means that a camera is required on them so a camera is added and 1 is returned, which means a camera is
+//present. And if a camera is already present there, then no need of another camera and hence zero is returned. If all the nodes below root are covered, but the
+//root is yet to be covered, ans returned will be -1 which means another camera will be added before returning the final camera count
+
+int cameras=0;
+    int minCameraCover_(TreeNode* root){
+        if(root==NULL) return 0;
+        int leftAns=minCameraCover_(root->left);
+        int rightAns=minCameraCover_(root->right);
+        
+        if(leftAns==-1||rightAns==-1){
+            cameras++;
+            return 1;
+        }
+        if(leftAns==1||rightAns==1){
+            return 0;
+        }
+        return -1;
+    }
+    int minCameraCover(TreeNode* root) {
+        if(root->left==NULL&&root->right==NULL) return 1;
+        int ans=minCameraCover_(root);
+        if(ans==-1) cameras++;
+        return cameras;
+    }
+
+//https://leetcode.com/problems/house-robber-iii/
+//Approach- If the root house is robbed by the robber, then it can't loot the left and right child of the root. So we'll calculate how the maximum amount will be 
+//generated, either by looting the root house and not lootinf the left and right child or by looting the left child or not, or by looting the right child or not
+//The maximum of all these cases will be the answer
+
+vector<int> rob_(TreeNode* root){
+        if(root==NULL) return{0,0};
+        vector<int> lres=rob_(root->left);
+        vector<int> rres=rob_(root->right);
+        vector<int> myAns(2,0);
+        myAns[0]=lres[1]+root->val+rres[1];
+        myAns[1]=max(lres[0],lres[1])+max(rres[0],rres[1]);
+        return myAns;
+    }
+    int rob(TreeNode* root) {
+        if(root==NULL) return 0;
+        vector<int> myAns=rob_(root);
+        return max(myAns[0],myAns[1]);
+    }
+
+///https://leetcode.com/problems/path-sum-iii/
+//Approach- The optimised solution uses hashmap to track the paths encountered. To track if the path is available, we'll find if prefixSum-targetSum is present in
+//the map or not. When prefiSum's path is encountered, it's count is reduced and if count becomes zero, it is removed from the hashmap. map[0] is made 1 for the
+//case when node is equal to the targetsum
+
+int ans=0;
+    void pathSumIII(TreeNode* root, unordered_map<int,int>map, int targetSum, int prefixSum){
+        if(root==NULL) return;
+        prefixSum+=root->val;
+        ans+=map[prefixSum-targetSum];
+        map[prefixSum]++;
+        pathSumIII(root->left,map,targetSum,prefixSum);
+        pathSumIII(root->right,map,targetSum,prefixSum);
+        map[prefixSum]--;
+        if(map[prefixSum]==0){
+            map.erase(prefixSum);
+        }
+    }
+    int pathSum(TreeNode* root, int targetSum) {
+        if(root==NULL) return 0;
+        unordered_map<int,int> map;
+        map[0]=1;
+        pathSumIII(root,map,targetSum,0);
+        return ans;
+    }
+
