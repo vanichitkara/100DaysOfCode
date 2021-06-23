@@ -67,3 +67,6 @@ Solved 3 questions of Binary Trees (binary tree to doubly linked list, binary tr
 
 ### Day 22 (22/06/21)
 Solved 3 questions of Binary Trees (binary tree camera, house robber III, path sum III)
+
+### Day 23 (23/06/21)
+Solved 3 questions of Binary Trees (maximum width, burning tree, longest zigzag path)
