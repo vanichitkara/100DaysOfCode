@@ -901,3 +901,113 @@ int ans=0;
         return ans;
     }
 
+//June 23
+
+//https://leetcode.com/problems/maximum-width-of-binary-tree/
+//Approach- A pair class is amde which contains the node and its width. Root is pushed into a queue of pair with width as 1, then it is popped out and its left
+//and right child are inserted into the queue with width as 2*(width of root) for left child and 2*(width of root)+1 for right child. The width is calculated
+//last index-first index+1 and maximum width is returned
+
+class pair{
+        public:
+        TreeNode* node=NULL;
+        unsigned int w=0;
+        pair(TreeNode* node, unsigned int w){
+            this->node=node;
+            this->w=w;
+        }
+    };
+    int widthOfBinaryTree(TreeNode* root) {
+        unsigned int ans=0;
+        queue<pair> que;
+        que.push(pair(root,1));
+        while(que.size()!=0){
+            int size=que.size();
+            unsigned int fi=que.front().w;
+            unsigned int li=que.front().w;
+            while(size-->0){
+                pair p=que.front();
+                que.pop();
+                TreeNode* node=p.node;
+                long w=p.w;
+                li=w;
+                if(node->left!=NULL){
+                    que.push(pair(node->left,2*w));
+                }
+                if(node->right!=NULL){
+                    que.push(pair(node->right,2*w+1));
+                }
+                ans=max(ans,li-fi+1);
+            }
+        }
+        return ans;
+    }
+
+//https://practice.geeksforgeeks.org/problems/burning-tree/1#
+//Approach-
+
+void assignDistance(Node* root, int distance, unordered_map<int,int>& distanceOfTarget){
+        if(!root) return;
+        if(distanceOfTarget.find(distance)==distanceOfTarget.end()){
+            distanceOfTarget[distance]=1;
+        }
+        else distanceOfTarget[distance]++;
+        assignDistance(root->left, distance+1, distanceOfTarget);
+        assignDistance(root->right, distance+1, distanceOfTarget);
+    }
+    int helper(Node* root, int target, unordered_map<int,int>& distanceOfTarget){
+        if(root==NULL) return -1;
+        if(root->data==target) return 0;
+        int dl=helper(root->left,target,distanceOfTarget);
+        if(dl!=-1){
+            if(distanceOfTarget.find(dl+1)==distanceOfTarget.end()){
+                distanceOfTarget[dl+1]=1;
+            }
+            else distanceOfTarget[dl+1]++;
+            assignDistance(root->right,dl+2,distanceOfTarget);
+            return dl+1;
+        }
+        int dr=helper(root->right,target,distanceOfTarget);
+        if(dr!=-1){
+            if(distanceOfTarget.find(dr+1)==distanceOfTarget.end()){
+                distanceOfTarget[dr+1]=1;
+            }
+            else distanceOfTarget[dr+1]++;
+            assignDistance(root->left,dr+2,distanceOfTarget);
+            return dr+1;
+        }
+        return -1;
+    }
+    int minTime(Node* root, int target) 
+    {
+        // Your code goes here
+        if(!root) return -1;
+        unordered_map<int,int> distanceOfTarget;
+        int p=helper(root,target,distanceOfTarget);
+        return distanceOfTarget.size();
+    }
+
+//https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/
+//Approach- Move=false means move in left direction and move=right means move in right direction. If move is initialised for left child, then it's further call to
+//its left child would be initliased as count=1 since it won't be a zigzag and count would again start at 1. Right call for left child will be initialised as
+//count+1 since it is creating a zigzag path. Sane for right child, its left call will be initliased as count+1 and right call as count=1. The longest count
+//is stored in result variable and returned.
+
+int res=0; 
+    void dfs(TreeNode *root,bool move,int count=1){
+        if(root==nullptr) return ;  
+        res=max(res,count); 
+        if(move==false){
+            dfs(root->left,false,1); 
+            dfs(root->right,!move,count+1); 
+        }
+        else{
+            dfs(root->left,!move,count+1);
+            dfs(root->right,true,1);
+        }
+    }
+    int longestZigZag(TreeNode* root) {
+        dfs(root->left,false); 
+        dfs(root->right,true); 
+        return res;
+    }
