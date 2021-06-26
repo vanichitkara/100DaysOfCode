@@ -132,3 +132,33 @@ TreeNode* sortedArrayToBST(vector<int>& nums, int si, int ei) {
     TreeNode* sortedArrayToBST(vector<int>& nums) {
         return sortedArrayToBST(nums,0,nums.size()-1);
     }
+
+//June 26
+
+//https://leetcode.com/problems/delete-node-in-a-bst/
+//Approach- If the node to be deleted has no child, simply attach NULL to its parent. If the node had left child or righ child, make its parent node point directly
+//to its child. If the node to be removed has both left and righ child, find the maximum node in leftsubtree, replace the value of the node to be removed with
+//the maximum in left subtree, and then remove the node with max value in left subtree to maintain the order of BST
+
+int maxNode (TreeNode* root){
+        TreeNode* curr=root;
+        while(curr->right!=NULL){
+            curr=curr->right;
+        }
+        return curr->val;
+    }
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root==NULL) return NULL;
+        if(key<root->val)
+            root->left=deleteNode(root->left,key);
+        else if(key>root->val)
+            root->right=deleteNode(root->right,key);
+        else{
+            if(root->left==NULL||root->right==NULL)
+                return root->left!=NULL?root->left:root->right;
+            int maxValue=maxNode(root->left);
+            root->val=maxValue;
+            root->left=deleteNode(root->left,maxValue);
+        }
+        return root;
+    }
