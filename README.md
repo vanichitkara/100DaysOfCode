@@ -72,4 +72,10 @@ Solved 3 questions of Binary Trees (binary tree camera, house robber III, path s
 Solved 3 questions of Binary Trees (maximum width, burning tree, longest zigzag path)
 
 ### Day 24 (24/06/21)
-Started with binary search trees and solved 7 questions (size, height, maximum, minimum, search, insert, lowest common ancestor, convert sorted array into BST)
+Started with Binary search trees and solved 7 questions (size, height, maximum, minimum, search, insert, lowest common ancestor, convert sorted array into BST)
+
+### Day 25 (25/06/21)
+Revised some old concepts done till now
+
+### Day 26 (26/06/21)
+Solved 1 question of Binary Search Trees (delete node in a BST)
