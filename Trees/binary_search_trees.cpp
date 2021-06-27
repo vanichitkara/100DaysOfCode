@@ -162,3 +162,98 @@ int maxNode (TreeNode* root){
         }
         return root;
     }
+
+//June 27
+
+//https://practice.geeksforgeeks.org/problems/predecessor-and-successor/1#
+//Approach- To find predecessor and successor, a root's predecessor will be the rightmost node of its left subtree if not null, and successor will be leftmost node
+//of right subtree if not null, when current node is equal to key. If current node is smaller than the given key, the predeseccor is set as current node and current
+//is shifted to its right. Else if the current node is greater than the given key, the successor is set as curr and current node is shifted to its left
+
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key){
+    Node* curr=root;
+    bool isDataPresent=false;
+    while(curr!=NULL){
+        if(curr->key==key){
+            isDataPresent=true;
+            if(curr->left!=NULL){
+                pre=curr->left;
+                while(pre->right!=NULL) pre=pre->right;
+            }
+            if(curr->right!=NULL){
+                suc=curr->right;
+                while(suc->left!=NULL) suc=suc->left;
+            }
+            break;
+        }
+        else if(curr->key<key){
+            pre=curr;
+            curr=curr->right;
+        }
+        else{
+            suc=curr;
+            curr=curr->left;
+        }
+    }
+}
+
+//https://leetcode.com/problems/binary-search-tree-iterator/
+//Approach- Make a stack of tree nodes and push the root and it's left children till there exist none. And then pop the topmost element when next function is called
+//and push all of the right children of the popped node. When hasnext function is call, check if the size of stack is zero and return true when size is not zero.
+
+stack<TreeNode*> st;
+    
+    BSTIterator(TreeNode* root) {
+        addAllLeft(root);
+    }
+    
+    void addAllLeft(TreeNode* root){
+        if(root==NULL) return;
+        TreeNode* curr=root;
+        while(curr!=NULL){
+            st.push(curr);
+            curr=curr->left;
+        }
+    }
+    
+    int next() {
+        TreeNode* node=st.top();
+        st.pop();
+        addAllLeft(node->right);
+        return node->val;
+    }
+    
+    bool hasNext() {
+        return st.size()!=0;
+    }
+
+//https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/
+//Approach- Traverse through the preorder array and when checking for each node and set it's range. If the next node belongs to left node's range, attach it there
+//else attach it to the right side of the node
+
+int idx=0;
+    TreeNode* bstFromPreorder(vector<int>& preorder, int lr, int rr) {
+        if(idx>=preorder.size() || preorder[idx]<lr || preorder[idx]>rr)
+            return NULL;
+        
+        TreeNode* node=new TreeNode(preorder[idx++]);
+        node->left=bstFromPreorder(preorder,lr,node->val);
+        node->right=bstFromPreorder(preorder,node->val,rr);
+        return node;
+    }
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+     return bstFromPreorder(preorder,-(int)1e8,(int)1e8);
+    }
+
+//https://leetcode.com/problems/validate-binary-search-tree/
+//Approach- Check if the left subtree has values shorter than root's value and right subtree has values greater than root's value, i.e., the property of BST is 
+//maintained
+
+bool isValidBST(TreeNode* root, long min, long max){
+        if(!root) return true;
+        if(root->val<=min || root->val>=max) return false;
+        return isValidBST(root->left,min,root->val) && isValidBST(root->right,root->val,max);
+    }
+    bool isValidBST(TreeNode* root) {
+        return isValidBST(root, -(long)1e13, (long)1e13);
+    }
