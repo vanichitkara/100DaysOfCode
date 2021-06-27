@@ -79,3 +79,6 @@ Revised some old concepts done till now
 
 ### Day 26 (26/06/21)
 Solved 1 question of Binary Search Trees (delete node in a BST)
+
+### Day 27 (27/06/21)
+Solved 4 questions of Binary Search Trees (Inorder predecessor and successor, BST iterator, construct BST from preorder traversal, validate BST)
