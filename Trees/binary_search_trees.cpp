@@ -257,3 +257,76 @@ bool isValidBST(TreeNode* root, long min, long max){
     bool isValidBST(TreeNode* root) {
         return isValidBST(root, -(long)1e13, (long)1e13);
     }
+
+//June 28
+
+//https://leetcode.com/problems/two-sum-iv-input-is-a-bst/
+//Approach- Make two stacks of BST, one containing the left boundary node and the other containing right boundary nodes. Then add top of the two stacks and if 
+//they are equal to the sum required, return true. If it's smaller than required sum, pop the top of stack containing left boundary nodes and insert its right
+//nodes till there are no more nodes left to add. If it's greater than required sum, pop the top of stack containing right boundary nodes and insert its left nodes
+//till there are none left to add. If there is no two sum pair in the BST, return false
+
+void insertAllLeft(stack<TreeNode*>&st, TreeNode* node){
+        while (node!=NULL){
+            st.push(node);
+            node=node->left;
+        }
+    }
+    void insertAllRight (stack<TreeNode*>&st, TreeNode* node){
+        while(node!=NULL){
+            st.push(node);
+            node=node->right;
+        }
+    }
+    bool findTarget(TreeNode* root, int k) {
+        if(root==NULL) return false;
+        stack<TreeNode*> lst;
+        stack<TreeNode*> rst;
+        
+        insertAllLeft(lst,root);
+        insertAllRight(rst,root);
+        
+        while(lst.top()->val<rst.top()->val){
+            int sum=lst.top()->val+rst.top()->val;
+            if(sum==k) return true;
+            else if(sum<k){
+                TreeNode* node=lst.top();
+                lst.pop();
+                insertAllLeft(lst,node->right);
+            }
+            else{
+                TreeNode* node=rst.top();
+                rst.pop();
+                insertAllRight(rst,node->left);
+            }
+        }
+        return false;
+    }
+
+//https://leetcode.com/problems/balance-a-binary-search-tree/
+//Approach- Push the values of the tree in inorder sequence. Then take the middle of the vector and make it the root. Then populate the left and right subtree
+//by taking middle recursively within the given range for left and right subtree.
+
+vector<int> vec;
+    
+    void values(TreeNode* root){
+        if(!root) return;
+        values(root->left);
+        vec.push_back(root->val);
+        values(root->right);
+    }
+    
+    TreeNode* create(int l, int r, vector<int>& vec){
+        if(l>r) return NULL;
+        int mid=l+(r-l)/2;
+        TreeNode* root=new TreeNode(vec[mid]);
+        root->left=create(l,mid-1,vec);
+        root->right=create(mid+1,r,vec);
+        return root;
+    }
+    TreeNode* balanceBST(TreeNode* root) {
+        if(!root) return NULL;
+        values(root);
+        int l=0, r=vec.size()-1;
+        return create(l,r,vec);
+    }
