@@ -85,3 +85,6 @@ Solved 4 questions of Binary Search Trees (Inorder predecessor and successor, BS
 
 ### Day 28 (28/06/21)
 Solved 2 questions of Binary Search Trees (Two Sum IV - Input is a BST, Balance a Binary Search Tree)
+
+### Day 29 (29/06/21)
+Solved 1 question of AVL Trees (AVL Tree Insertion)
