@@ -90,4 +90,4 @@ Solved 2 questions of Binary Search Trees (Two Sum IV - Input is a BST, Balance 
 Solved 1 question of AVL Trees (AVL Tree Insertion)
 
 ### Day 30 (30/06/21)
-Started with geenric trees and solved 10 questions (size, height, maximmum, minimum, find the given node, rot to node path, lowest common ancestor, level order traversal, is mirror, flatten a geenric tree)
+Started with generic trees and solved 10 questions (size, height, maximmum, minimum, find the given node, root to node path, lowest common ancestor, level order traversal, is mirror, flatten a generic tree)
