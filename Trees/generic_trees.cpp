@@ -79,3 +79,40 @@ bool nodeToRootPath(Node* node, int data, vector<int> ans){
     nodeToRootPath (node,data,ans);
     return ans;
  }
+
+//https://www.pepcoding.com/resources/online-java-foundation/generic-tree/lca-generic-tree-official/ojquestion
+//Appraoch- find the root to node path from both l1 and l2. And then traverse the vector in which their root to ndoe path is stored. When the nodes at the index
+//are not equal, break the loop and the ast common value found in the vector is the lowest common ancestor of l1 and l2
+
+bool nodeToRootPath(Node* node, int data, vector<Node*> ans){
+     if(node->data==data){
+         ans.push_back(node);
+         return true;
+     }
+     bool res=false;
+     for(Node* child:node->children){
+         res=res||nodeToRootPath(child,data,ans);
+     }
+     if(res)
+     ans.push_back(node);
+     return res;
+ }
+
+  int lca(Node* node, int d1, int d2) {
+    vector<Node*> l1;
+    nodeToRootPath(node,d1,l1);
+    vector<Node*> l2;
+    nodeToRootPath(node,d2,l2);
+    int i=l1.size()-1;
+    int j=l2.size()-1;
+    int lca=0;
+    while(i>=0 && j>=0){
+        if(l1[i]!=l2[j]) break;
+        lca=l1[i]->data;
+        i--;
+        j--;
+    }
+    return lca;
+  }
+
+
