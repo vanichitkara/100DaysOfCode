@@ -115,4 +115,45 @@ bool nodeToRootPath(Node* node, int data, vector<Node*> ans){
     return lca;
   }
 
+//https://leetcode.com/problems/n-ary-tree-level-order-traversal/
+//Approach- Make a queue and push the root node in it. Then pop it and insert it in a vector and push it's children in the queue. Now those children are popped one
+//by one and inserted into the vector while their children are inserted in the queue. This goes on till all the nodes are traversed and are pushed into the vector
 
+vector<vector<int>> levelOrder(Node* root) {
+        if(root==NULL) return {};
+        vector<vector<int>>res;
+        queue<Node*>q;
+        q.push(root);
+        while(!q.empty()){
+            int n=q.size();
+            vector<int>tmp;
+            for(int i=0;i<n;i++){
+                Node* cur=q.front();
+                q.pop();
+                tmp.push_back(cur->val);
+                for(Node* it: cur->children){
+                    q.push(it);
+                }
+            }
+            res.push_back(tmp);
+        }
+        return res;
+    }
+
+//https://www.pepcoding.com/resources/online-java-foundation/generic-tree/is-generic-tree-symmetric-official/ojquestion
+//Approach- If the size of the trees whose symmetry is to checked is not same, return false. Then check for each node of the trees whether they are symmetric or not
+
+bool areMirror (Node* n1, Node* n2){
+      if(n1->children.size()!=n2->children.size())
+      return false;
+      for(int i=0, j=n1->children.size()-1; j>=0; i++,j--){
+          Node* child1= n1->children[i];
+          Node* child2= n2->children[j];
+          if(!areMirror(child1,child2))
+          return false;
+      }
+      return true;
+  }
+  bool IsSymmetric(Node* node) {
+    return areMirror(node, node);
+  }
