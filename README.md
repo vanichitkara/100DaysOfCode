@@ -91,3 +91,9 @@ Solved 1 question of AVL Trees (AVL Tree Insertion)
 
 ### Day 30 (30/06/21)
 Started with generic trees and solved 10 questions (size, height, maximmum, minimum, find the given node, root to node path, lowest common ancestor, level order traversal, is mirror)
+
+### Day 31 (01/07/21)
+Studied Morris Traversal and solved 6 questions (inorder and preorder morris traversal, recover BST, Kth smallest element in BST, construct BST from level order traversal, find median of BST)
+
+### Day 32 (02/07/21)
+Started with graphs and did 4 questons (print adjacency matrix, has path, print all paths, count paths)
