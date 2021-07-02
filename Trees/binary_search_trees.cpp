@@ -330,3 +330,113 @@ vector<int> vec;
         int l=0, r=vec.size()-1;
         return create(l,r,vec);
     }
+
+//July 1
+
+//https://leetcode.com/problems/recover-binary-search-tree/
+//Approach- set the first pointer as the node which is out of order, i.e. which disturbs the order of the inorder traversal, set the second pointer as the node with
+//which it should be swapped to restore the correct inorder traversal which follows the property of BST
+
+TreeNode* prev=NULL, *first=NULL, *second=NULL;
+    void recover(TreeNode* root){
+        if(root==NULL) return;
+        recover(root->left);
+        if(prev!=NULL && prev->val>root->val){
+            if(first==NULL)
+                first=prev;
+            second=root;
+        }
+        prev=root;
+        recover(root->right);
+    }
+    void recoverTree(TreeNode* root) {
+        recover(root);
+        int temp=0;
+        temp=first->val;
+        first->val=second->val;
+        second->val=temp;
+    }
+
+//https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+//Approach- Push the root node and all the right nodes of it, then pop them one by one and push all the left elements of the popped element till it's left node is 
+//null. The tree will be pushed in inorder manner and while k is reater than 1, the nodes will be popped and their left elements will be pushed.
+
+void insertLeftMost(stack<TreeNode*> &st, TreeNode* node){
+        while(node!=NULL){
+            st.push(node);
+            node=node->left; 
+        }
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        stack<TreeNode*>st;
+        insertLeftMost(st,root);
+        while(k-- > 1){
+            TreeNode* node=st.top();
+            st.pop();
+            insertLeftMost(st,node->right);
+        }
+        return st.top()->val;
+    }
+
+//https://practice.geeksforgeeks.org/problems/median-of-bst/1
+//Approach- First traverse the given tree in inorder manner, then find the size of the tree. if size is odd then return middle element, else return the average of
+// the two middle elements
+
+int x,y;
+void inOrder(Node* root,int &count,int n){
+    if(root==NULL)
+        return;
+    inOrder(root->left,count,n);
+    count++;
+    if(count==n/2){
+        x=root->data;
+    }
+    if(count==(n/2)+1){
+        y=root->data;
+    }
+    inOrder(root->right,count,n);
+}
+int size(Node* root){
+    if(root==NULL)
+        return 0;
+    
+    return size(root->left) + 
+           size(root->right) + 1;
+}
+float findMedian(struct Node *root)
+{
+    x=0;
+    y=0;
+    int count=0;
+    int n=size(root);
+    inOrder(root,count,n);
+    if(n%2==0)
+        return (float)(x+y)/2.0;
+    else
+        return y;
+}
+
+//https://practice.geeksforgeeks.org/problems/convert-level-order-traversal-to-bst/1
+//Approach- Check the array one by one, the first element is the root, and the following elements will go in left subtree if they are less than root's value and 
+//right subtree if they are greater than root' value
+
+Node *construct(Node *root,int key){
+    if(root==NULL)
+    return new Node(key);
+    if(root->data<key)
+    root->right=construct(root->right,key);
+    if(root->data>key)
+    root->left=construct(root->left,key);
+    return root;
+}
+Node* constructBst(int arr[], int n)
+{
+     Node *root=new Node(arr[0]);
+     for(int i=0;i<n;i++){
+         if(root->data>arr[i])
+         root->left=construct(root->left,arr[i]);
+         if(root->data<arr[i])
+         root->right=construct(root->right,arr[i]);
+     }
+     return root;
+}
