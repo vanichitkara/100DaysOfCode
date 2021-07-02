@@ -1011,3 +1011,76 @@ int res=0;
         dfs(root->right,true); 
         return res;
     }
+
+//July-1
+
+//https://www.pepcoding.com/resources/data-structures-and-algorithms-in-java-levelup/trees/in-order-morris-traversal-in-binarytree/ojquestion
+//Approach- In Morris traversal, no extra space is used and it uses the concept of threaded binary tree where the leaf node has a thread attached to the parent 
+//node so that it can approach it back during the traversal. In inorder traversal, first the thread is made and the value is added in vector when the thread is
+//to be broken
+
+TreeNode* rightMost(TreeNode* next, TreeNode* curr){
+      while(next->right!=NULL && next->right!=curr)
+      next=next->right;
+      return next;
+  }
+vector<int> morrisInTraversal(TreeNode* Treenode) {
+    vector<int> ans;
+    TreeNode* curr=Treenode;
+    while(curr!=NULL){
+        TreeNode* next=curr->left;
+        if(next==NULL){
+            ans.push_back(curr->val);
+            curr=curr->right;
+        }
+        else{
+            TreeNode* rightMost=rightMost(next, curr);
+            if(rightMost->right==NULL){
+                rightMost->right=curr;
+                curr=curr->left;
+            }
+            else{
+                rightMost->right=NULL;
+                ans.push_back(curr->val);
+                curr=curr->right;
+            }
+        }
+    }
+    return ans;
+  }
+
+//https://www.pepcoding.com/resources/data-structures-and-algorithms-in-java-levelup/trees/pre-order-morris-traversal-in-binary-tree/ojquestion
+//Approach-  In Morris traversal, no extra space is used and it uses the concept of threaded binary tree where the leaf node has a thread attached to the parent 
+//node so that it can approach it back during the traversal. In postorder traversal, first the thread is made and the value is added in vector then the thread is
+//to be broken
+
+TreeNode* rightMost(TreeNode* next, TreeNode* curr){
+      while(next->right!=NULL && next->right!=curr)
+      next=next->right;
+      return next;
+  }
+vector<int> morrisInTraversal(TreeNode* Treenode) {
+    vector<int> ans;
+    TreeNode* curr=Treenode;
+    while(curr!=NULL){
+        TreeNode* next=curr->left;
+        if(next==NULL){
+            ans.push_back(curr->val);
+            curr=curr->right;
+        }
+        else{
+            TreeNode* rightMost=rightMost(next, curr);
+            if(rightMost->right==NULL){
+                rightMost->right=curr;
+                ans.push_back(curr->val);
+                curr=curr->left;
+            }
+            else{
+                rightMost->right=NULL;
+                curr=curr->right;
+            }
+        }
+    }
+    return ans;
+  }
+
