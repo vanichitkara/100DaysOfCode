@@ -87,3 +87,65 @@ void printAllPath(vector<Edge> graph, int src, int dest, vector<bool> visited, s
         }
         visited[src]=false;
     }
+
+//July 3
+
+//https://www.pepcoding.com/resources/online-java-foundation/graphs/hamiltonian-official/ojquestion
+//Approach- Start with the source and keep storing the path in the string names psf(path so far). If there exists a path which covers all the vertices, then it is 
+//a hamiltonian path. Print that path with a dot at the end. And if there is an edge between the source and the destination, then it is a hamiltonian cycle, 
+//print it with an * at end
+
+void hamiltonian(vector<vector<Edge> graph, int src, unordered_set<int> visited, string psf, int osrc){
+        if(visited.size()==graph.size()-1){
+            cout<<psf;
+            bool cycle=false;
+            for(Edge e: graph[src]){
+                if(e.nbr==osrc){
+                    cycle=true;
+                    break;
+                }
+            }
+            if(cycle==true){
+                cout<<"*"<<endl;
+            }
+            else cout<<"."<<endl;
+            return;
+        }
+        visited[src]++;
+        for(Edge e: graph[src]){
+            if(visited.find(e.nbr)==visited.end()){
+		psf+=e.nbr;
+                hamiltonian(graph, e.nbr, visited, psf, osrc);
+            }
+        }
+        visited.erase(src);
+    }
+
+//https://www.pepcoding.com/resources/online-java-foundation/graphs/is-graph-connected-official/ojquestion
+//Approach- Check for all the vertices and mark them as visited as soon as they are checked, then mark their neighbours visited and add them in the component. Only
+//those nighbours can be visited and added in a component which haven't been added before. So for each vertex, its neighbours will be checked and added in a
+//component of components
+
+void getConnected components (int vtces, vector<vector<int>> comps, vector<vector<Edge>> graph){
+	vector<bool> visited (vtces, false);
+      	vector<vector<int>> comps;
+      	for(int v = 0; v < vtces; v++){
+        	if(visited[v] == false){
+            	vector<int> comp;
+            	gcc(graph, v, visited, comp);
+            	comps.push_back(comp);
+         	}
+      	}
+      	return(comps.size() == 1);
+   }
+
+   void gcc(vector<vector<Edge>> graph, int src, vector<bool> visited, vector<int> comp) {
+      comp.push_back(src);
+      visited[src] = true;
+      for (Edge e : graph[src]) {
+         if (!visited[e.nbr]) {
+            gcc(graph, e.nbr, visited, comp);
+         }
+      }
+   }
+
