@@ -96,4 +96,7 @@ Started with generic trees and solved 10 questions (size, height, maximmum, mini
 Studied Morris Traversal and solved 6 questions (inorder and preorder morris traversal, recover BST, Kth smallest element in BST, construct BST from level order traversal, find median of BST)
 
 ### Day 32 (02/07/21)
-Started with graphs and did 4 questons (print adjacency matrix, has path, print all paths, count paths)
+Started with graphs and did 4 questions (print adjacency matrix, has path, print all paths, count paths)
+
+### Day 33 (03/07/21)
+Solved 2 questions of Graphs (hamiltonian path and cycle, get connected components)
