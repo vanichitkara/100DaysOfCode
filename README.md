@@ -100,3 +100,6 @@ Started with graphs and did 4 questions (print adjacency matrix, has path, print
 
 ### Day 33 (03/07/21)
 Solved 2 questions of Graphs (hamiltonian path and cycle, get connected components)
+
+### Day 34 (04/07/21)
+Solved 4 questions of Graph (number of islands, island perimeter, max area of island, surrounded regions)
