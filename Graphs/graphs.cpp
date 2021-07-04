@@ -211,3 +211,79 @@ int islandPerimeter(vector<vector<int>>& grid) {
         }
         return count*4-nbrs;
     }
+
+//https://leetcode.com/problems/max-area-of-island/
+//Approach- Traverse through all the matrix elements and check in its 4 directions for its neighbours and calculate the total area of an island piece. Keep storing
+//the maximum area and update the maximum area as the elements are traversed and return the maximum area found
+ 
+int drawTree(vector<vector<int>>& grid, int i, int j, vector<vector<bool>>& vis){
+        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size() || grid[i][j]==0 || vis[i][j]==true)
+            return 0;
+        vis[i][j]=true;
+        int area=1;
+        area+=drawTree(grid, i-1, j, vis);
+        area+=drawTree(grid, i+1, j, vis);
+        area+=drawTree(grid, i, j-1, vis);
+        area+=drawTree(grid, i, j+1, vis);
+        return area;
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        if(grid.size()==0 || grid[0].size()==0)
+            return 0;
+        int n=grid.size();
+        int m=grid[0].size();
+        int maxArea=0;
+        
+        vector<vector<bool>> vis(n,vector<bool>(m,false));
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                int area=0;
+                if(grid[i][j]==1 && vis[i][j]==false){
+                    area+=drawTree(grid, i, j, vis);
+                    maxArea=max(maxArea, area);
+                }
+            }
+        }
+        return maxArea;
+    }
+
+//https://leetcode.com/problems/surrounded-regions/
+//Approach- Traverse all the elements and replace 'O' at the boundaries and its neighbours with '$' sign and the 'O' away from boundary with 'X'
+
+void surroundedRegion(int i, int j, int n, int m, vector<vector<char>>& board, vector<vector<int>>& dir){
+        board[i][j]='$';
+        for(int d=0; d<dir.size(); d++){
+            int r=i+dir[d][0];
+            int c=j+dir[d][1];
+            if(r>=0 && c>=0 && r<n && c<m && board[r][c]=='O')
+                surroundedRegion(r,c,n,m,board,dir);
+        }
+    }
+void solve(vector<vector<char>>& board) {
+        if(board.size()==0 || board[0].size()==0){
+            return;
+        }
+        int n=board.size();
+        int m=board[0].size();
+        vector<vector<int>> dir={{0,-1}, {0,1}, {1,0}, {-1,0}};
+        for(int i=0; i<n; i++){
+            if(board[i][0]=='O')
+                surroundedRegion(i,0,n,m,board,dir);
+            if(board[i][m-1]=='O')
+                surroundedRegion(i,m-1,n,m,board,dir);
+        }
+        for(int j=0; j<m; j++){
+            if(board[0][j]=='O')
+                surroundedRegion(0,j,n,m,board,dir);
+            if(board[n-1][j]=='O')
+                surroundedRegion(n-1,j,n,m,board,dir);
+        }
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(board[i][j]=='O')
+                    board[i][j]='X';
+                if(board[i][j]=='$')
+                    board[i][j]='O';
+            }
+        }
+    }
