@@ -149,3 +149,65 @@ void getConnected components (int vtces, vector<vector<int>> comps, vector<vecto
       }
    }
 
+//July 4
+
+//https://leetcode.com/problems/number-of-islands/
+//Approach- Check for all the elements and if they are not visited yet, and check in their 4 directions and mark them visited as well. When one island is traversed,
+//then next elements in the matrix are checked and if another island (denoted by 1) is encountered, increase the count and check in all 4 directions. Check till all
+//elements are traversed and return the count
+
+void drawTree(vector<vector<char>>& grid, int i, int j, vector<vector<bool>>& vis){
+        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size() || grid[i][j]=='0'||vis[i][j]==true)
+            return;
+        
+        vis[i][j]=true;
+        drawTree(grid, i-1, j, vis);
+        drawTree(grid, i+1, j, vis);
+        drawTree(grid, i, j-1, vis);
+        drawTree(grid, i, j+1, vis);
+    }
+int numIslands(vector<vector<char>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<bool>> vis(n,vector<bool>(m,false));
+        int count=0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j]=='1' && vis[i][j]==false){
+                    drawTree(grid, i, j, vis);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+//https://leetcode.com/problems/island-perimeter/
+//Approach- Traverse all the elements and increase count when an island piece is encountered (denoted by 1) and check in all 4 directions for counting its immediate
+//neighbours. The perimeter is given by (total count) * 4 - (total neighbours) coz when a block is joined with another, 2 edges are removed from the perimeter.
+
+int islandPerimeter(vector<vector<int>>& grid) {
+        if(grid.size()==0 || grid[0].size()==0){
+            return 0;
+        }
+        vector<vector<int>> dir={{0,1}, {1,0}, {-1,0}, {0,-1}};
+        int n=grid.size();
+        int m=grid[0].size();
+        int count=0, nbrs=0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j]==1){
+                    count++;
+                    for(int d=0; d<dir.size(); d++){
+                        int r=i+dir[d][0];
+                        int c=j+dir[d][1];
+                        
+                        if(r>=0 && c>=0 && r<n && c<m && grid[r][c]==1){
+                            nbrs++;
+                        }
+                    }
+                }
+            }
+        }
+        return count*4-nbrs;
+    }
