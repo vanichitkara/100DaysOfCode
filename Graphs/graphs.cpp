@@ -288,40 +288,41 @@ void solve(vector<vector<char>>& board) {
         }
     }
 
-// July 5
+//July 5
 
 //https://www.pepcoding.com/resources/online-java-foundation/graphs/is-cyclic-official/ojquestion#!
-//Approach-
+//Approach- Insert the elements starting from source, the insert its neighbours. After traversing the elements, mark them as visited and if an element which is
+//already traversed is up for insertion in queue, it means that there is a cycle in the graph.
 
-bool detectCycle()
-boolean[] visited= new boolean[vtces];
+bool detectCycle (int vtces, vector<vector<Edge>> graph){
+vector<bool> visited(vtces, false);
       for(int v=0; v<vtces; v++){
           if(visited[v]==false){
-              boolean cycle = isCyclic(graph, v, visited);
+              bool cycle = isCyclic(graph, v, visited);
               if(cycle){
-                System.out.println(true);
-                return;
+                return true;
               }
           }
       }
-      System.out.println(false);
+      return false;
    }
 
-   static class Pair{
+   class Pair{
        int v;
-       String psf;
+       string psf;
        
-       Pair(int v, String psf){
-           this.v=v;
-           this.psf=psf;
+       Pair(int v, string psf){
+           this->v=v;
+           this->psf=psf;
        }
-   }
+   };
    
-   public static boolean isCyclic(ArrayList<Edge>[] graph, int src, boolean[] visited){
-      ArrayDeque<Pair> q= new ArrayDeque<>();
-      q.add(new Pair(src, src+""));
+   bool isCyclic(vector<vector<Edge>> graph, int src, vector<bool> visited){
+      queue<Pair> q;
+      q.push(Pair(src, to_string(src)+""));
       while(q.size()>0){
-          Pair rem=q.removeFirst();
+          Pair rem=q.front();
+	  q.pop();
           
           if(visited[rem.v]==true){
               return true;
@@ -329,7 +330,7 @@ boolean[] visited= new boolean[vtces];
           visited[rem.v]=true;
           for(Edge e: graph[rem.v]){
               if(visited[e.nbr]==false){
-                  q.add(new Pair(e.nbr, rem.psf+e.nbr));
+                  q.push(Pair(e.nbr, to_string(rem.psf)+to_string(e.nbr)));
               }
           }
       }
