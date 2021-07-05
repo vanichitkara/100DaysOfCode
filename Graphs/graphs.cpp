@@ -293,6 +293,7 @@ void solve(vector<vector<char>>& board) {
 //https://www.pepcoding.com/resources/online-java-foundation/graphs/is-cyclic-official/ojquestion#!
 //Approach-
 
+bool detectCycle()
 boolean[] visited= new boolean[vtces];
       for(int v=0; v<vtces; v++){
           if(visited[v]==false){
@@ -336,7 +337,8 @@ boolean[] visited= new boolean[vtces];
    }
 
 //https://leetcode.com/problems/shortest-path-in-binary-matrix/
-//Approach-
+//Approach- Traverse through the elements in the matrix only when they are 0. When on an element, check in 8 directions including diagonals and only travel when
+//the adjacent elements are 0. When taking the next step, level is increased to count the shortest path. And 2D matrix is converted to 1D matrix for easy traversal
 
 int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
         if(grid.size()==0 || grid[0].size()==0){
@@ -379,7 +381,8 @@ int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
     }
 
 //https://leetcode.com/problems/is-graph-bipartite/
-//Approach-
+//Approach- Insert the elements in a queue starting from source and start the colour with 0. When inserting its neightbours, change the color to 1. And alternate
+//the colors when inserting neighbours. When an elements previously had another color but is inserted with another color, then the graph is not bipartite
 
 bool isBipartite (vector<vector<int>>& graph, vector<int> &vis, int src){
         queue<int> que;
