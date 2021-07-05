@@ -103,3 +103,6 @@ Solved 2 questions of Graphs (hamiltonian path and cycle, get connected componen
 
 ### Day 34 (04/07/21)
 Solved 4 questions of Graph (number of islands, island perimeter, max area of island, surrounded regions)
+
+### Day 35 (05/07/21)
+Solved 3 questions of Graph (detect cycle, shortest path in binary matrix, is graph bipartite)
