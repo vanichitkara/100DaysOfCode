@@ -287,3 +287,137 @@ void solve(vector<vector<char>>& board) {
             }
         }
     }
+
+// July 5
+
+//https://www.pepcoding.com/resources/online-java-foundation/graphs/is-cyclic-official/ojquestion#!
+//Approach-
+
+boolean[] visited= new boolean[vtces];
+      for(int v=0; v<vtces; v++){
+          if(visited[v]==false){
+              boolean cycle = isCyclic(graph, v, visited);
+              if(cycle){
+                System.out.println(true);
+                return;
+              }
+          }
+      }
+      System.out.println(false);
+   }
+
+   static class Pair{
+       int v;
+       String psf;
+       
+       Pair(int v, String psf){
+           this.v=v;
+           this.psf=psf;
+       }
+   }
+   
+   public static boolean isCyclic(ArrayList<Edge>[] graph, int src, boolean[] visited){
+      ArrayDeque<Pair> q= new ArrayDeque<>();
+      q.add(new Pair(src, src+""));
+      while(q.size()>0){
+          Pair rem=q.removeFirst();
+          
+          if(visited[rem.v]==true){
+              return true;
+          }
+          visited[rem.v]=true;
+          for(Edge e: graph[rem.v]){
+              if(visited[e.nbr]==false){
+                  q.add(new Pair(e.nbr, rem.psf+e.nbr));
+              }
+          }
+      }
+      return false;
+   }
+
+//https://leetcode.com/problems/shortest-path-in-binary-matrix/
+//Approach-
+
+int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        if(grid.size()==0 || grid[0].size()==0){
+            return -1;
+        }
+        int n=grid.size();
+        int m=n;
+        if(grid[0][0]==1 || grid[n-1][n-1]==1)
+            return -1;
+        
+        queue<int> que;
+        vector<vector<int>> dir={{0,1}, {1,0}, {0,-1}, {-1,0}, {1,1}, {-1,-1}, {-1,1}, {1,-1}};
+        
+        grid[0][0]=1;
+        que.push(0*m+0);
+        
+        int level=1;
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                int idx= que.front();
+                que.pop();
+                int r=idx/m;
+                int c=idx%m;
+                if(r==n-1 && c==m-1){
+                    return level;
+                }
+                for(int d=0; d<dir.size(); d++){
+                    int x=r+dir[d][0];
+                    int y=c+dir[d][1];
+                    if(x>=0 && y>=0 && x<n && y<m && grid[x][y]==0){
+                        grid[x][y]=1;
+                        que.push(x*m+y);
+                    }
+                }
+            }
+            level++;
+        }
+        return -1;
+    }
+
+//https://leetcode.com/problems/is-graph-bipartite/
+//Approach-
+
+bool isBipartite (vector<vector<int>>& graph, vector<int> &vis, int src){
+        queue<int> que;
+        que.push(src);
+        
+        int color=0;
+        bool isCycle=false;
+        
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                int rvtx=que.front();
+                que.pop();
+                if(vis[rvtx]!=-1){
+                    isCycle=true;
+                    if(vis[rvtx]!=color){
+                        return false;
+                    }
+                    continue;
+                }
+                vis[rvtx]=color;
+                for(int v: graph[rvtx]){
+                    if(vis[v]==-1)
+                        que.push(v);
+                }
+            }
+            color= (color+1)%2;
+        }
+        return true;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n=graph.size();
+        vector<int>vis(n,-1);
+        bool res=true;
+        for(int i=0; i<n; i++){
+            if(vis[i]==-1){
+                res=res &&  isBipartite(graph, vis, i);
+            }
+        }
+        return res;
+    }
