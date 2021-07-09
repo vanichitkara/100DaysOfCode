@@ -117,3 +117,4 @@ Worked on Microsoft Teams clone project
 Worked on Microsoft Teams clone project
 
 ### Day 39 (09/07/21)
+Solved 2 questions of Graph (rotting oranges, walls and gates)
