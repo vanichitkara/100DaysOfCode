@@ -425,3 +425,94 @@ bool isBipartite (vector<vector<int>>& graph, vector<int> &vis, int src){
         }
         return res;
     }
+
+//July 9
+
+//https://leetcode.com/problems/rotting-oranges/
+//Approach- First traverse the array and count the numbr of fresh oranges and push the rotten oranges in a queue. Then pop them one by one and rot their adjacent
+//oranges and increase the time by one and decrease the fresh orange count. Pop the now rotten oranges into the queue again. When the number of fresh oranges is 
+//zero, return the total time
+
+int orangesRotting(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<int>> dir={{0,1}, {1,0}, {0,-1}, {-1,0}};
+        queue<int> que;
+        int time=1, freshOranges=0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(grid[i][j]==2)
+                    que.push(i*m+j);
+                else if(grid[i][j]==1)
+                    freshOranges++;
+            }
+        }
+        if(freshOranges==0)
+            return 0;
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                int idx=que.front();
+                que.pop();
+                int r=idx/m;
+                int c=idx%m;
+                for(int d=0; d<dir.size(); d++){
+                    int x=r+dir[d][0];
+                    int y=c+dir[d][1];
+                    if(x>=0 && y>=0 && x<n && y<m && grid[x][y]==1){
+                        freshOranges--;
+                        grid[x][y]=2;
+                        que.push(x*m+y);
+                        if(freshOranges==0)
+                            return time;
+                    }
+                }
+            }
+            time++;
+        }
+        return -1;
+    }
+
+//https://www.lintcode.com/problem/663/description (Walls and Gates)
+//Approach- Traverse through the array and if a gate is encountered, it is pushed into the queue and if a room is encountered, increase the count of rooms. Then
+//pop the elements in queue one by one and change the elements in the matrix with their distance from the gate, decrease the number of rooms and push the rooms
+//with newly assigned distance again in the queue. The code is fully executed when the number of rooms remains zero.
+
+void wallsAndGates(vector<vector<int>> &rooms) {
+        // write your code here
+        int n=rooms.size();
+        int m=rooms[0].size();
+        vector<vector<int>> dir={{0,1}, {1,0}, {0,-1}, {-1,0}};
+        queue<int> que;
+        int countRooms=0;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(rooms[i][j]==0)
+                que.push(i*m+j);
+                else if(rooms[i][j]==2147483647)
+                countRooms++;
+            }
+        } 
+        int distance=1;
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                int idx=que.front();
+                que.pop();
+                int r=idx/m;
+                int c=idx%m;
+                for(int d=0; d<dir.size(); d++){
+                    int x=r+dir[d][0];
+                    int y=c+dir[d][1];
+                    if(x>=0 && y>=0 && x<n && y<m && rooms[x][y]==2147483647){
+                        rooms[x][y]=distance;
+                        countRooms--;
+                        que.push(x*m+y);
+                        if(countRooms==0)
+                        return;
+                    }
+                }
+            }
+            distance++;
+        }
+    }
