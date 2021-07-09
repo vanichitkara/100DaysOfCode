@@ -106,3 +106,14 @@ Solved 4 questions of Graph (number of islands, island perimeter, max area of is
 
 ### Day 35 (05/07/21)
 Solved 3 questions of Graph (detect cycle, shortest path in binary matrix, is graph bipartite)
+
+### Day 36 (06/07/21)
+Worked on Microsoft Teams clone project
+
+### Day 37 (07/07/21)
+Worked on Microsoft Teams clone project
+
+### Day 38 (08/07/21)
+Worked on Microsoft Teams clone project
+
+### Day 39 (09/07/21)
