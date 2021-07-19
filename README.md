@@ -118,3 +118,14 @@ Worked on Microsoft Teams clone project
 
 ### Day 39 (09/07/21)
 Solved 2 questions of Graph (rotting oranges, walls and gates)
+
+### Day 40 (10/07/21)
+Studied Topological Sort and Kahn's algorithm
+
+### Day 41 (11/07/21)
+Studied cycle detection in graph using DFS and Kosaraju's algorithm
+
+<!--Week long break-->
+
+### Day 42 (19/07/21)
+Studied Union find algorithm and solved 3 questions (Course schedule, course schedule II, longest increasing path in a matrix)
