@@ -516,3 +516,149 @@ void wallsAndGates(vector<vector<int>> &rooms) {
             distance++;
         }
     }
+
+//July 19
+
+//https://leetcode.com/problems/course-schedule/
+//Approach- Use Kahn's algorithm to check dependency of courses on each other. If the courses can be completed, returnt true else return false
+
+bool kahnsAlgo(int n, vector<vector<int>>& graph){
+        vector<int> indegree(n,0);
+        
+        for(int i=0; i<n; i++){
+            for(int e:graph[i]){
+                indegree[e]++;
+            }
+        }
+        
+        queue<int> que;
+        int count=0;
+        
+        for(int i=0; i<n; i++){
+            if(indegree[i]==0)
+                que.push(i);
+        }
+        
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                int rvtx=que.front();
+                que.pop();
+                count++;
+                
+                for(int e:graph[rvtx]){
+                    if(--indegree[e]==0){
+                        que.push(e);
+                    }
+                }
+            }
+        }
+        return count==n;
+    }
+    
+    bool canFinish(int n, vector<vector<int>>& arr) {
+        vector<vector<int>>graph(n);
+        for(vector<int>ar:arr){
+            graph[ar[0]].push_back(ar[1]);
+        }
+        return kahnsAlgo(n,graph);
+    }
+
+//https://leetcode.com/problems/course-schedule-ii/submissions/
+//Approach- Use Kahn's algorithm to check course dependency. If the courses can be completed, i.e the course dependencies can be resolved, then return the order of
+//course completion in an array else return an empty array
+
+vector<int> kahnsAlgo(int n, vector<vector<int>> & graph){
+        vector<int> indegree(n,0);
+        vector<int> ans;
+        queue<int> que;
+        
+        for(int i=0; i<n; i++){
+            for(int e:graph[i])
+                indegree[e]++;
+        }
+        
+        for(int i=0; i<n; i++){
+            if(indegree[i]==0)
+                que.push(i);
+        }
+        
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                int rvtx=que.front();
+                que.pop();
+                
+                ans.push_back(rvtx);
+                
+                for(int e:graph[rvtx]){
+                    if(--indegree[e]==0)
+                        que.push(e);
+                }
+            }
+        }
+        return ans;
+    }
+    
+    vector<int> findOrder(int n, vector<vector<int>>& arr) {
+        vector<vector<int>> graph(n);
+        for(vector<int> ar: arr){
+            graph[ar[1]].push_back(ar[0]);
+        }
+        vector<int> ans=kahnsAlgo(n,graph);
+        
+        if(ans.size()!=n)
+            return {};
+        else return ans;
+    }
+
+//https://leetcode.com/problems/longest-increasing-path-in-a-matrix/
+//Approach- Check the indegree of the matrix elements. Indegree in this case will be the number of elements smaller than the element which are adjacent to the
+//matrix cell. Then use Kahn's algorithm and update the number of times the elements are added in the queue i.e. the level. The number of level tells us the 
+//length of the longest path in the matrix
+
+int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        vector<vector<int>> indegree(n, vector<int> (m,0));
+        vector<vector<int>> dir={{0,1},{1,0},{0,-1},{-1,0}};
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                for(int d=0; d<dir.size(); d++){
+                    int x=i+dir[d][0];
+                    int y=j+dir[d][1];
+                    
+                    if(x>=0 && y>=0 && x<n && y<m && matrix[x][y]>matrix[i][j])
+                        indegree[x][y]++;
+                }
+            }
+        }
+        
+        queue<int> que;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(indegree[i][j]==0)
+                    que.push(i*m+j);
+            }
+        }
+        
+        int level=0;
+        while(que.size()!=0){
+            int size=que.size();
+            while(size-->0){
+                int idx=que.front();
+                que.pop();
+                int r=idx/m;
+                int c=idx%m;
+                for(int d=0; d<dir.size(); d++){
+                    int x=r+dir[d][0];
+                    int y=c+dir[d][1];
+                    if(x>=0 && y>=0 && x<n && y<m && matrix[x][y]>matrix[r][c] &&--indegree[x][y]==0)
+                        que.push(x*m+y);
+                        
+                }
+            }
+            level++;
+        }
+        return level;
+    }
