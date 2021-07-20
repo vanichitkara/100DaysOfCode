@@ -129,3 +129,6 @@ Studied cycle detection in graph using DFS and Kosaraju's algorithm
 
 ### Day 42 (19/07/21)
 Studied Union find algorithm and solved 3 questions (Course schedule, course schedule II, longest increasing path in a matrix)
+
+### Day 43
+Studied basic DSA (number manipulation)
