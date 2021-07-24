@@ -9,7 +9,7 @@ int getSize(Node* node){
 }
 
 //https://practice.geeksforgeeks.org/problems/height-of-binary-tree/1
-//Approach- Height of binaru tree is zero if the root of the tree is null, i.e., the tree is empty. Bring the height of the left and right subtree and find the 
+//Approach- Height of binary tree is zero if the root of the tree is null, i.e., the tree is empty. Bring the height of the left and right subtree and find the 
 //maximum out of them and add 1 for the root and return this as height
 
 int height(struct Node* node){
