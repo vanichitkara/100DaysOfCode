@@ -51,17 +51,16 @@ int possible_paths(vector<vector<int>>edges, int n, int s, int d){
 	}
 
 //https://www.pepcoding.com/resources/online-java-foundation/graphs/has-path-official/ojquestion
-//Approach- if source is equal to destination, return true since they hav a path between them. Mark the source as visited and check if the neighbouring vertex of
+//Approach- if source is equal to destination, return true since they have a path between them. Mark the source as visited and check if the neighbouring vertex of
 //source have a path to destination, if they have a path, then source has a path to destination.
 
 bool hasPath(vector<Edge> graph, int src, int dest, vector<bool> visited){
           if(src==dest) 
           return true;
           visited[src]=true;
-          bool res=false;
           for(Edge e: graph[src]){
               if(!visited[e.nbr]){
-                  boolean nbrHasPath = hasPath(graph, e.nbr, dest, visited);
+                  bool nbrHasPath = hasPath(graph, e.nbr, dest, visited);
                   if (nbrHasPath){
                       return true;
                   }
@@ -126,7 +125,7 @@ void hamiltonian(vector<vector<Edge> graph, int src, unordered_set<int> visited,
 //those nighbours can be visited and added in a component which haven't been added before. So for each vertex, its neighbours will be checked and added in a
 //component of components
 
-void getConnected components (int vtces, vector<vector<int>> comps, vector<vector<Edge>> graph){
+void getConnectedComponents (int vtces, vector<vector<int>> comps, vector<vector<Edge>> graph){
 	vector<bool> visited (vtces, false);
       	vector<vector<int>> comps;
       	for(int v = 0; v < vtces; v++){
