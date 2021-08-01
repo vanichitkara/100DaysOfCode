@@ -107,7 +107,7 @@ Solved 4 questions of Graph (number of islands, island perimeter, max area of is
 ### Day 35 (05/07/21)
 Solved 3 questions of Graph (detect cycle, shortest path in binary matrix, is graph bipartite)
 
-### Day 36 (06/07/21)
+### Day 36 (06/07/2
 Worked on Microsoft Teams clone project
 
 ### Day 37 (07/07/21)
@@ -130,5 +130,32 @@ Studied cycle detection in graph using DFS and Kosaraju's algorithm
 ### Day 42 (19/07/21)
 Studied Union find algorithm and solved 3 questions (Course schedule, course schedule II, longest increasing path in a matrix)
 
-### Day 43
+### Day 43 (20/07/21)
 Studied basic DSA (number manipulation)
+
+### Day 44 (21/07/21)
+Revised time complexity and arrays and did some questions on these topics
+
+### Day 45 (22/07/21)
+Revised searching algorithms, their implementation and time complexity. Also revised trees, their types, implementation (insertion, dleetion, traversals)
+
+### Day 46 (23/07/21)
+Revised hashing, its key terminologies, and hashing techniques. Also revised heaps and priority queues
+
+### Day 47 (24/07/21)
+Revised linked lists and binary treesad solved questions on these topics
+
+### Day 48 (25/07/21)
+Revised stacks and queues, hashmaps and heaps. Also revised a little bit of OOPS and OS 
+
+### Day 49 (26/07/21)
+Completed OOPS revision and revised arrays and strings
+
+### Day 50 (27/07/21)
+Solved a mixed bag of questions for online assessment preparation
+
+### Day 51 (30/07/21)
+Revised graphs
+
+### Day 52 (31/07/21)
+Revised graphs
