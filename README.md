@@ -159,3 +159,6 @@ Revised graphs
 
 ### Day 52 (31/07/21)
 Revised graphs
+
+### Day 53 (01/08/21)
+Solved 4 questions on union find algo of graphs
