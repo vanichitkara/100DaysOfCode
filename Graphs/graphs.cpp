@@ -661,3 +661,142 @@ int longestIncreasingPath(vector<vector<int>>& matrix) {
         }
         return level;
     }
+
+//August 1
+
+//https://leetcode.com/problems/redundant-connection/
+//Approach- Use union find algo to find the parent of the vertices, if two vertices don't have the same parent vertex, that is they don't belong to the same group, then make the
+//assign parent f vertex 2 to vertex 1. And if the parents are already same, then that edge is the redundant connection
+
+vector<int> par;
+    int findPar(int u){
+        return par[u]==-1?u:par[u]=findPar(par[u]);
+    }    
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+        par.resize(n+1,-1);
+        for(vector<int>& edge:edges){
+            int p1=findPar(edge[0]);
+            int p2=findPar(edge[1]);
+            if(p1!=p2){
+                par[p1]=p2;
+            }
+            else return edge;
+        }
+        return {};
+    }
+
+//https://leetcode.com/problems/lexicographically-smallest-equivalent-string/
+//Approach- Find the parent of the alphabet in such way that the smallest alphabet is made the parent, i.e., to create the smallest string lexicographically, make groups of 
+//letters and the parent will be the smallest letter of them all. When we fill the answer string, then that smallest letter will represent the group and will be pushed in the
+//string when any of the aplhabets in that particular group is encountered, thus making the lexicographically smallest string.
+
+string smallestEquivalentString(string A, string B, string S)
+{
+    for (int i = 0; i < 26; i++)
+        par.push_back(i);
+
+    for (int i = 0; i < A.length(); i++)
+    {
+        int p1 = findPar(A[i] - 'a');
+        int p2 = findPar(B[i] - 'a');
+
+        par[p1] = min(p1, p2);
+        par[p2] = min(p1, p2);
+    }
+
+    string ans = "";
+    for (int i = 0; i < S.length(); i++)
+    {
+        ans += (char)(findPar(S[i] - 'a') + 'a');
+    }
+
+    return ans;
+}
+
+//https://leetcode.com/problems/similar-string-groups/
+//Approach- We compare the given string groups one by one and if they have more than two letter jumbled up, then they don't belong to the same group, else they belong in the 
+//same group. It can be so then one string belongs to the group because it matches with one string and not the other. Group up the strings and reduce the number of individual
+//strings, when all the strings are grouped up, return the final counr of groups.
+
+vector<int> par;
+    int findPar(int u){
+        return par[u]==u?u:par[u]=findPar(par[u]);
+    }
+    bool isSimilar(string& s1, string& s2){
+        int count=0;
+        for(int i=0; i<s1.size(); i++){
+            if(s1[i]!=s2[i]&& ++count>2)
+                return false;
+        }
+        return true;
+    }
+    int numSimilarGroups(vector<string>& strs) {
+        int count=strs.size();
+        int n=strs.size();
+        par.resize(n);
+        for(int i=0; i<n; i++) par[i]=i;
+        for(int i=0; i<n; i++){We 
+            for(int j=i+1; j<n; j++){
+                if(isSimilar(strs[i],strs[j])){
+                    int p1=findPar(i);
+                    int p2=findPar(j);
+                    
+                    if(p1!=p2){
+                        par[p1]=p2;
+                        count--;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+//https://leetcode.com/problems/number-of-islands-ii/
+//Approach- Using union find algo, make the groups of matrix elements that are adjacent to each other and return the count of islands after each iteration
+
+vector<int> numIslands2(int m, int n, vector<vector<int>> &positions)
+{
+    par.resize(m * n, -1);
+
+    vector<vector<int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+    vector<vector<int>> grid(m, vector<int>(n, 0));
+    int count = 0;
+    vector<int> ans;
+    for (vector<int> &pos : positions)
+    {
+        int i = pos[0];
+        int j = pos[1];
+
+        if (grid[i][j] != 1)
+        {
+
+            grid[i][j] = 1;
+            count++;
+
+            for (int d = 0; d < 4; d++)
+            {
+                int x = i + dir[d][0];
+                int y = j + dir[d][1];
+
+                if (x >= 0 && y >= 0 && x < m && y < n && grid[x][y] == 1)
+                {
+                    int p1 = findPar(i * n + j);
+                    int p2 = findPar(x * n + y);
+
+                    if (p1 != p2)
+                    {
+                        count--;
+                        par[p1] = p2;
+                    }
+                }
+            }
+        }
+
+        ans.push_back(count);
+    }
+
+    return ans;
+}
+
