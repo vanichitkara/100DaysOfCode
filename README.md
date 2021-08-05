@@ -161,8 +161,10 @@ Revised graphs
 Revised graphs
 
 ### Day 53 (01/08/21)
-Solved 4 questions on union find algo of graphs
+Solved 4 questions on union find algo of graphs (redundant connection, lexicographically smallest equivalent string, similar string groups, number of islands-II)
 
 ### Day 54 (02/08/21)
 Studied minimum spanning trees
  
+### Day 55 (05/08/21)
+Studied Kruskal's algorithm and solved three questions (optimize water distribution in a village, number of islands, max area of island)
