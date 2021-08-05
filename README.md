@@ -162,3 +162,7 @@ Revised graphs
 
 ### Day 53 (01/08/21)
 Solved 4 questions on union find algo of graphs
+
+### Day 54 (02/08/21)
+Studied minimum spanning trees
+ 
