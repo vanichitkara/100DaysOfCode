@@ -1,5 +1,5 @@
 # 100DaysOfCode (Starting from June 1, 2021)
-Repository for #100DaysOfCode. This repo will contain the solutions to the questions I solve and their approach for future reference.
+Repository for #100DaysOfCode. This repository will contain the solutions to the questions I solve and their approach for future reference.
 
 ### Day 1 (01/06/21)
 Started with Linked List. Solved 8 questions of linked list (find middle, reverse list, check palindrome, reorder list, merge two sorted lists, remove duplicates from sorted lists, linked list sorting, merge K sorted lists)
@@ -168,3 +168,6 @@ Studied minimum spanning trees
  
 ### Day 55 (05/08/21)
 Studied Kruskal's algorithm and solved three questions (optimize water distribution in a village, number of islands, max area of island)
+
+### Day 56 (07/08/21)
+Solved 3 questions on union find algo and modified bfs (journey to the moon, mr. president, bus routes)
