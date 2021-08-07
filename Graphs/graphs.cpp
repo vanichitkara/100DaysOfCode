@@ -803,7 +803,8 @@ vector<int> numIslands2(int m, int n, vector<vector<int>> &positions)
 //August 5
 
 //https://leetcode.com/problems/optimize-water-distribution-in-a-village/
-//Approach-
+//Approach- Use kruskal's algo to find the shortest path with least cost to optimise the water distribution. Make a dummy well on node 0 and connect that with every other vertex
+//to make a graph and then find out the least path as a well will be required to get water supply.
 
 vector<int> par;
 int minCostToSupplyWater_(int N, vector<vector<int>> &Edges)
@@ -847,7 +848,8 @@ int minCostToSupplyWater(int n, vector<int> &wells, vector<vector<int>> &pipes)
 }
 
 //https://leetcode.com/problems/number-of-islands/submissions/
-//Approach
+//Approach- In this question that was earlier done using dfs, now union find is used to find the number of islands. The surrounding islands are grouped and the number of islands
+//that are surrounded by adjacent island pieces are counted.
 
 vector<int> par;
     int findPar(int u){
@@ -884,7 +886,8 @@ vector<int> par;
     }
 
 //https://leetcode.com/problems/max-area-of-island/submissions/
-//Approach-
+//Approach- This question was also done by dfs before and is now done using union find. The adjacent pieces are added and are made into a larger component and these components
+//are compared to find the maximum area.
 
 vector<int> par;
     int findPar(int u){
@@ -923,3 +926,134 @@ vector<int> par;
         return maxArea;
     }
 
+//August 7
+
+//https://www.hackerrank.com/challenges/journey-to-the-moon/problem
+//Approach-
+
+vector<int> par;
+vector<int> size;
+int findPar(int u){
+    return par[u]==u?u: par[u]=findPar(par[u]);
+}
+
+long journeyToMoon(int n, vector<vector<int>> astronaut) {
+    for(int i=0; i<n; i++){
+        par.push_back(i);
+        size.push_back(1);
+    }
+    for(vector<int> &ast: astronaut){
+        int p1=findPar(ast[0]);
+        int p2=findPar(ast[1]);
+        if(p1!=p2){
+            par[p1]=p2;
+            size[p2]+=size[p1];
+        }
+    }
+    long sum=0, totalPairs=0; 
+    for(int i=0; i<n; i++){
+        if(par[i]==i){
+            totalPairs+=sum*size[i];
+            sum+=size[i];
+        }
+    }
+    return totalPairs;
+}
+
+//https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/practice-problems/algorithm/mr-president/
+//Approach-
+
+vector<int> par;
+int findPar(int u){
+	return par[u]==u ? u : par[u]=findPar(par[u]);
+}
+
+int mrPresident(int n, vector<vector<int>>& edges, long k){
+	for(int i=0; i<=n; i++) par.push_back(i);
+	long overallWeightSum=0;
+	vector<int> mstEdgeWeight;
+	for(vector<int>&e : edges){
+		int p1=findPar(e[0]);
+		int p2=findPar(e[1]);
+
+		if(p1!=p2){
+			par[p1]=p2;
+			mstEdgeWeight.push_back(e[2]);
+			overallWeightSum+=e[2];
+			n--;
+		}
+	}
+	if(n>1) return -1;
+	if(overallWeightSum<=k) return 0;
+
+	int transform=0;
+	for(int i=mstEdgeWeight.size()-1; i>=0; i--){
+		overallWeightSum=overallWeightSum-mstEdgeWeight[i]+1;
+		transform++;
+
+		if(overallWeightSum<=k) break;
+	}
+	
+	return overallWeightSum<=k? transform : -1;
+}
+
+//https://leetcode.com/problems/bus-routes/
+//Approach-
+
+int numBusesToDestination(vector<vector<int>>& routes, int src, int dest) {
+        if (src == dest)
+        return 0;
+        int n = routes.size();
+        unordered_map<int, vector<int>> busStandMapping;
+        int busNumber = 0;
+        for (vector<int> &busStandList : routes)
+        {
+            for (int busStand : busStandList)
+            {
+                busStandMapping[busStand].push_back(busNumber);
+            }
+            busNumber++;
+        }
+
+        unordered_set<int> isBusStandSeen;
+        vector<bool> isBusSeen(n, false);
+
+        queue<int> que;
+        que.push(src);
+        isBusStandSeen.insert(src);
+
+        int level = 0;
+        while (que.size() != 0)
+        {
+            int size = que.size();
+            while (size-- > 0)
+            {
+                int busStand = que.front();
+                que.pop();
+
+                vector<int> allBuses = busStandMapping[busStand];
+                for (int busNo : allBuses)
+                {
+                    if (isBusSeen[busNo])
+                        continue;
+
+                    for (int bs : routes[busNo]) // bs is bus stand
+                    {
+                        if (isBusStandSeen.find(bs) == isBusStandSeen.end())
+                        {
+                            que.push(bs);
+                            isBusStandSeen.insert(bs);
+
+                            if (bs == dest)
+                                return level + 1;
+                        }
+                    }
+
+                    isBusSeen[busNo] = true;
+                }
+            }
+            level++;
+        }
+
+        return -1;
+    }
