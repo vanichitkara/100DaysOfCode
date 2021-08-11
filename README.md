@@ -171,3 +171,15 @@ Studied Kruskal's algorithm and solved three questions (optimize water distribut
 
 ### Day 56 (07/08/21)
 Solved 3 questions on union find algo and modified bfs (journey to the moon, mr. president, bus routes)
+
+### Day 57 (08/08/21)
+Studied Prim's algorithm
+
+### Day 58 (09/08/21)
+Studied Dijkstra's algorithm
+
+### Day 59 (10/08/21)
+Studied articulation point and bridge, solved one question (Network delay time)
+
+### Day 60 (11/08/21)
+Solved 3 questions (critical connections in a network, cheapest flights within k stops, minimum malware spread)
