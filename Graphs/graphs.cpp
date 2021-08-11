@@ -1057,3 +1057,182 @@ int numBusesToDestination(vector<vector<int>>& routes, int src, int dest) {
 
         return -1;
     }
+
+//August 10
+
+//https://leetcode.com/problems/network-delay-time/
+//Approach-
+
+class Pair{
+        int wsf;
+        int vtx;
+        
+        Pair (int wsf, int vtx){
+            this->wsf=wsf;
+            this->vtx=vtx;
+        }
+    };
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        vector<vector<pair<int,int>>> graph(n+1);
+        for(vector<int>&ar: times){
+            graph[ar[0]].push_back({ar[1], ar[2]});
+        }
+        
+        vector<int> dis(n+1, 1e9);
+        vector<int> vis(n+1, false);
+        
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> que;
+        que.push({0,k});
+        dis[k]=0;
+        
+        int noOfEdges=0;
+        int maxValue=0;
+        
+        while(que.size()!=0){
+            pair<int, int> p=que.top();
+            que.pop();
+            int vtx=p.second, wsf=p.first;
+            
+            if(vis[vtx])
+                continue;
+            
+            if(vtx!=k)
+                noOfEdges++;
+            
+            maxValue=max(maxValue,wsf);
+            vis[vtx]=true;
+            
+            for(pair<int,int>&e:graph[vtx]){
+                if(!vis[e.first] && wsf+e.second<dis[e.first]){
+                    dis[e.first]=wsf+e.second;
+                    que.push({wsf+e.second, e.first});
+                }
+            }
+        }
+        if(noOfEdges!=n-1)
+            return -1;
+        
+        return maxValue;
+    }
+
+//August 11
+
+//https://leetcode.com/problems/critical-connections-in-a-network/
+//Approach-
+
+vector<int> dis, low;
+    vector<bool> vis;
+    int time = 0;
+    vector<vector<int>> res;
+
+    void dfs(int src, int par, int n, vector<vector<int>> &graph){
+        dis[src] = low[src] = time++;
+        vis[src] = true;
+
+        for (int nbr : graph[src])
+        {
+            if (!vis[nbr])
+            {
+                dfs(nbr, src, n, graph);
+
+                if (dis[src] < low[nbr])
+                    res.push_back({src, nbr});
+
+                low[src] = min(low[src], low[nbr]);
+            }
+            else if (nbr != par)
+                low[src] = min(dis[nbr], low[src]);
+        }
+    }
+
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections){
+        vector<vector<int>> graph(n);
+        for (vector<int> &ar : connections)
+        {
+            graph[ar[0]].push_back(ar[1]);
+            graph[ar[1]].push_back(ar[0]);
+        }
+
+        dis.resize(n, 0);
+        low.resize(n, 0);
+        vis.resize(n, false);
+
+        dfs(0, -1, n, graph);
+        return res;
+    }
+
+//https://leetcode.com/problems/cheapest-flights-within-k-stops/
+//Approach- 
+
+int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<int>dis(n,1e9);
+       
+        dis[src] = 0;
+
+        for (int EdgeCount = 1; EdgeCount <= k + 1; EdgeCount++) {
+         vector<int>ndis(n);
+            for (int i = 0; i < n; i++)
+                ndis[i] = dis[i];
+
+            for (vector<int>e : flights) {
+                int u = e[0], v = e[1], w = e[2];
+                if (dis[u] != (int) 1e9 && dis[u] + w < ndis[v])
+                    ndis[v] = dis[u] + w;
+            }
+
+            dis = ndis;
+        }
+
+        return dis[dst] != (int) 1e9 ? dis[dst] : -1;
+    }
+
+//https://leetcode.com/problems/minimize-malware-spread/
+//Approach-
+
+vector<int> leaders;
+    vector<int> size;
+    int getLeader(int n){
+        if(n==leaders[n]){
+            return n;
+        }
+        return leaders[n]=getLeader(leaders[n]);
+    }
+    int minMalwareSpread(vector<vector<int>>& graph, vector<int>& initial) {
+        int n=graph.size();
+        leaders.resize(n);
+        size.resize(n);
+        for(int i=0;i<n;i++){
+            leaders[i]=i;
+            size[i]=1;
+        }
+        for(int i=0;i<graph.size();i++){
+            for(int j=0;j<graph[i].size();j++){
+                if(i!=j and graph[i][j]==1){
+                    int u=i;
+                    int v=j;
+                    int l1=getLeader(leaders[u]);
+                    int l2=getLeader(leaders[v]);
+                    if(l1!=l2){
+                        size[l1]+=size[l2];
+                        leaders[l2]=l1;
+                    }
+                }
+            }
+        }
+        sort(initial.begin(),initial.end());
+
+        vector<int> ipc(n);//infected person count
+
+        for(auto&ip:initial){
+            ipc[getLeader(leaders[ip])]++;
+        }
+        int ans=initial[0];
+        int max_pop=0;
+        for(int i:initial){
+            if(ipc[getLeader(i)]==1 and size[getLeader(i)]>max_pop){
+                ans=i;
+                max_pop=size[getLeader(i)];
+            }
+        }
+        return ans;
+    }
