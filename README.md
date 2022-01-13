@@ -183,3 +183,8 @@ Studied articulation point and bridge, solved one question (Network delay time)
 
 ### Day 60 (11/08/21)
 Solved 3 questions (critical connections in a network, cheapest flights within k stops, minimum malware spread)
+
+## Break
+
+### Day 61 (13/01/22)
+Solved 4 questions (rotate and array k times, seperate 0s and 1s, seperate 0s, 1s and 2s, maximum sum in the configuration)
