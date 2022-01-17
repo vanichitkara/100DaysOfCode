@@ -100,3 +100,209 @@ int max_sum(int A[],int N)
     
     return ans;
 }
+
+
+// January 15
+
+//https://leetcode.com/problems/container-with-most-water/
+//Approach- Using two pounter approach, we calculate the area by multiplying the width with the height of the vertical line present at the index. If the height of line at index
+//i is less than height of line at index j, then area is calculated by multiplying the width with the height of line at i, and then i is moved forward and width is recalculated.
+//And if height of line at j is smaller than that at i, then area is calculated by multiplying the width with the height of line at j and then j is moved backward. 
+
+int maxArea(vector<int>& height) {
+    int n=height.size();
+    int i=0; 
+    int j=n-1;
+    int maxArea=0;
+    while(i<j){
+        int w=j-i;
+        if(height[i]<height[j]){
+            maxArea=max(maxArea,height[i++]*w);
+        }
+        else maxArea=max(maxArea,height[j--]*w);
+    }
+    return maxArea;
+}
+
+//https://leetcode.com/problems/longest-substring-without-repeating-characters/
+//Approach- We keep a count of repeated characters by seeing the frequency of the characters. If the frequency of characters is greter than 1, we increase the count. If the 
+// while the repeating character count is greater than 0, we move the pointer at the start and shorten the length by eliminating the repeating characters, when the repeating
+//character count is again 0, we calculate the maximum length of substring without repeating characters
+
+int lengthOfLongestSubstring(string s) {
+    int si=0, ei=0, count=0, len=0;
+    int n=s.size();
+    if(n<=1) return n;
+    vector<int> freq (128,0);
+    while(ei<n){
+        if(freq[s[ei]]++>0) count++;
+        ei++;
+        while(count>0){
+            if (freq[s[si]]-->1) count--;
+            si++;
+        }
+        len=max(len,ei-si);
+    }
+    return len;
+}
+
+//https://www.lintcode.com/problem/longest-substring-with-at-most-two-distinct-characters/description
+//Approach- We keep the count of distinct character by using the freqeuncy of the occuring characters. When the count of distinct characater becomes more than 2, we move the
+//si pointer at the start and try to reduce the number of distinct character and after that we update the new length. The longest length encountered is returned.
+
+int lengthOfLongestSubstringTwoDistinct(string &s) {
+    int n=s.size();
+    if(n<=2) return n;
+    int si=0, ei=0, count=0, len=0;
+    vector<int> freq(128,0);
+    while(ei<n){
+        if(freq[s[ei]]==0) count++;
+        freq[s[ei]]++;
+        ei++;
+        while(count>2){
+            if(freq[s[si]]==1) count--;
+            freq[s[si]]--;
+            si++;
+        }
+        len=max(len,ei-si);
+    }
+    return len;
+}
+
+
+// January 17
+
+//https://leetcode.com/problems/minimum-window-substring/
+//Approach- First we increase the frequency of the characters that appear in string t and then we find the same characters in string s, once we find all characters, we update 
+//the length and then try to find even a shorter length by moving the si pointer and updating the length if we find an even shorter length.
+
+string minWindow(string s, string t) {
+    int ns=s.size();
+    int nt=t.size();
+
+    if(ns<nt) return "";
+
+    vector<int> freq(128,0);
+    for(int i=0; i<nt; i++){
+        freq[t[i]]++;
+    }
+
+    int si=0, ei=0, count=nt, len=1e9, gsi=0;
+
+    while(ei<ns){
+        if(freq[s[ei]]>0) count--;
+        freq[s[ei]]--;
+        ei++;
+
+        while(count==0){
+            if(ei-si<len){
+                len=ei-si;
+                gsi=si;
+            }
+
+            if(freq[s[si]]==0) count++;
+            freq[s[si]]++;
+            si++;
+        }
+    }
+
+    return len==1e9?"":s.substr(gsi,len);
+}
+
+//https://practice.geeksforgeeks.org/problems/smallest-distant-window3132/1/#
+//Approach- first we find out those characters that appear in the string s and maintain their count. Then we check the string s again to find the smallest substring hahving all
+//those characters. We do so by maintaining the frequency and when the we find a string having all characters, we update the length of the string found and try to find even
+//a smaller string by moving the si pointer. We keep updating the lenght until we are not done traversing the whole string.
+
+string findSubString(string s)
+{
+    vector<int> freq(128,-1);
+    int n=s.size();
+    int count=0;
+
+    for(int i=0; i<n; i++){
+        if(freq[s[i]]==-1){
+            freq[s[i]]=0;
+            count++;
+        } 
+    }
+
+    int si=0, ei=0, gsi=0, len=1e9;
+
+    while(ei<n){
+        if(freq[s[ei]]==0) count--;
+        freq[s[ei]]++;
+        ei++;
+
+        while(count==0){
+            if(ei-si<len){
+                len=ei-si;
+                gsi=si;
+            }
+
+            if(freq[s[si]]==1) count++;
+            freq[s[si]]--;
+            si++;
+        }
+    }
+    return s.substr(gsi,len);
+}
+
+//https://practice.geeksforgeeks.org/problems/longest-k-unique-characters-substring0853/1/
+//Approach- We need to find longest substring with k number of unique characters, so if the lenfth of the string is smaller then k, then it is impossible to find such string.
+//We keep the count of occuring characters and once the count reaches k, we update the length and try to find an even longer string by moving the si pointer. If the fianl count
+//of unique characters is less than k, then also it is impossible to find the longest string. We return the maximum length found after traversing the string.
+
+int longestKSubstr(string s, int k) {
+    int n=s.size();
+    int si=0, ei=0, count=0, len=0;
+    if(k>n) return -1;
+    vector<int> freq(128,0);
+    while(ei<n){
+        if(freq[s[ei]]==0) count++;
+        freq[s[ei]]++;
+        ei++;
+        while(count>k){
+            if(freq[s[si]]==1) count--;
+            freq[s[si]]--;
+            si++;
+        }
+        len=max(len,ei-si);
+    }
+    if(count<k) return -1;
+    return len;
+}
+
+//https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/submissions/
+//Approach- To find the maximum number of vowels in a string of length k, we keep a count of the maximum vowels found, and once we find a string of length k, we update the 
+//maximum vowel count and try to get an even better count by checking the string ahead and updating the vowel count. We return the maximum vowel count once we traverse the whole
+//string
+
+bool isVowel(char ch){
+    if(ch=='a'||ch=='e'||ch=='i'||ch=='o'||ch=='u') return true;
+    else return false;
+}
+int maxVowels(string s, int k) {
+    int n=s.size(), si=0, ei=0, count=0, countVowel=0, maxCountVowel=0;
+    int len=1e9, gsi=0;
+    vector<int> freq(128,0);
+    while(ei<n){
+        if(freq[s[ei]]>=0) count++;
+        if(isVowel(s[ei])) countVowel++;
+        freq[s[ei]]++;
+        ei++;
+
+        while(count==k){
+            if(ei-si<len){
+                len=ei-si;
+                gsi=si;
+            }
+            maxCountVowel=max(maxCountVowel,countVowel);
+            if(freq[s[si]]>0) count--;
+            if(isVowel(s[si])) countVowel--;
+            freq[s[si]]--;
+            si++;
+        }
+    }
+    return maxCountVowel;
+}
