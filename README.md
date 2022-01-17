@@ -188,3 +188,9 @@ Solved 3 questions (critical connections in a network, cheapest flights within k
 
 ### Day 61 (13/01/22)
 Solved 4 questions (rotate and array k times, seperate 0s and 1s, seperate 0s, 1s and 2s, maximum sum in the configuration)
+
+### Day 62 (15/01/22)
+Solved 3 questions (container with most water, longest substring without repeating characters, longest substring with atmost 2 distinct characters)
+
+### Day 63 (17/01/22)
+Solved 4 questions (minimum window substring, smallest distinct window, longest substring with k unique characters, maximum number of vowel in substring of given length
