@@ -194,3 +194,6 @@ Solved 3 questions (container with most water, longest substring without repeati
 
 ### Day 63 (17/01/22)
 Solved 4 questions (minimum window substring, smallest distinct window, longest substring with k unique characters, maximum number of vowel in substring of given length
+
+### Day 64 (18/01/22)
+Solved 4 questions (subarrays with k different integer, count number of nice subarrays, fruit into baskets, binary subarrays wirh sum)
