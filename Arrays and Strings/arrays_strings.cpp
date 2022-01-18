@@ -306,3 +306,98 @@ int maxVowels(string s, int k) {
     }
     return maxCountVowel;
 }
+
+
+// January 18
+
+//https://leetcode.com/problems/subarrays-with-k-different-integers/
+//Approach- To get subarrays with exactly k different interegers, we get subarrays with atmost k different integers and then subtract the number of subarrays having atmost k-1
+//integers from it. To find the subarrays with atmost k different integers, we keep a frequency map and when the elements in map exceed k, we reduce the number of elements by
+//moving si pointer. We keep adding the length of ei-si in the answer everytime we move the ei pointer and acquire new element.
+
+int atmostKDistinct(vector<int>& nums, int k){
+    unordered_map<int,int> freq;
+    int n=nums.size(), si=0, ei=0, ans=0;
+
+    while(ei<n){
+        freq[nums[ei]]++;
+        ei++;
+        while(freq.size()>k){
+            freq[nums[si]]--;
+            if(freq[nums[si]]==0) freq.erase(nums[si]);
+            si++;
+        }
+        ans+=ei-si;
+    }
+    return ans;
+}
+int subarraysWithKDistinct(vector<int>& nums, int k) {
+    return atmostKDistinct(nums, k)-atmostKDistinct(nums, k-1);
+}
+
+//https://leetcode.com/problems/count-number-of-nice-subarrays/
+//Approach- To find the nice subarrays with k odd integers in it, we find the number of subarrays having atmost k odd integers and subtract the number of subarrays having atmost
+//k-1 integers from it. To find the subarrays with atmost k integers, we keep a count of the odd inteegrs we encounter and once the count goes beyond k, we decrease the length
+//of subarray by moving si pointer. We keep on incrementing our answer everytime we move the ei pointer
+
+int atmostKSubarrays(vector<int>& nums, int k){
+    int n=nums.size(); int si=0, ei=0, count=0, ans=0;
+    while(ei<n){
+        if(nums[ei]%2!=0) count++;
+        ei++;
+        while(count>k){
+            if(nums[si]%2!=0) count--;
+            si++;
+        }
+        ans+=ei-si;
+    }
+    return ans;
+}
+int numberOfSubarrays(vector<int>& nums, int k) {
+    return atmostKSubarrays(nums,k)-atmostKSubarrays(nums,k-1);
+}
+
+//https://leetcode.com/problems/fruit-into-baskets/
+//Approach- We have two fruit baskets, so the number of unique elements that we can have should not exceed 2. When the number of elements goes beyond 2, we shorten the length of
+//subarray by moving the si pointer. Whenever we move the ei pointer, we calculate the ans which stores the maximum length of subarray and return that answer.
+
+int totalFruit(vector<int>& fruits) {
+    unordered_map<int,int>freq;
+    int n=fruits.size(), si=0, ei=0, ans=0;
+    while(ei<n){
+        freq[fruits[ei]]++;
+        ei++;
+        while(freq.size()>2){
+            freq[fruits[si]]--;
+            if(freq[fruits[si]]==0) freq.erase(fruits[si]);
+            si++;
+        }
+        ans=max(ans,ei-si);
+    }
+    return ans;
+}
+
+//https://leetcode.com/problems/binary-subarrays-with-sum/
+//Approach- We keep adding the elements to get the sum and whent that sum becomes greater than the goal, we move the si pointer to reduce the sum and make it equal to goal.
+//Whenever we move the ei pointer, we increase the count by adding the length ei-si in it. To get the number of subarrays with sum equal to goal, we get the numer of subarrays 
+//with sum atmost equal to goal and then subtract the number of subarrays with sum atmoast equal to goal-1 from it.
+
+int atmostSum (vector<int>& nums, int goal){
+    int n=nums.size(), si=0, ei=0, sum=0, count=0;
+    while(ei<n){
+        sum+=nums[ei];
+        ei++;
+        while(sum>goal){
+            sum-=nums[si];
+            si++;
+        }
+        count+=ei-si;
+    }
+    return count;
+}
+int numSubarraysWithSum(vector<int>& nums, int goal) {
+    if(goal!=0){
+        return atmostSum(nums,goal)-atmostSum(nums,goal-1);
+    }
+    else return atmostSum(nums, goal);
+}
