@@ -401,3 +401,81 @@ int numSubarraysWithSum(vector<int>& nums, int goal) {
     }
     else return atmostSum(nums, goal);
 }
+
+
+// January 19
+
+//https://leetcode.com/problems/max-consecutive-ones/
+//Approach- Till we encounter a zero, we keep on moving the ei pointer and calculate the maximum length of consecutive ones. When a zero is encountered, we move the si pointer
+//so that we can calculate the new length which doesn't include the zero.
+
+int findMaxConsecutiveOnes(vector<int>& nums) {
+    int n=nums.size(),si=0, ei=0, len=0;
+    while(ei<n){
+        if(nums[ei]==0){
+            ei++;
+            si=ei;
+        }
+        else ei++;
+        len=max(len,ei-si);
+    }
+    return len;
+}
+
+//https://www.lintcode.com/problem/883/description
+//Approach- Since we can flip one 0 to 1, we can keep a count of zeroes we encounter, once the count reaches 2, i.e. we have one extra 0, we move the si pointer to eliminate the
+//0 and reduce the count back to 1, and we calculate the length of subarray everytime we move ei pointer.
+
+int findMaxConsecutiveOnes(vector<int> &arr) {
+    int n = arr.size(), si = 0, ei = 0, count = 0, len = 0;
+
+    while (ei < n) {
+        if (arr[ei++] == 0)
+            count++;
+
+        while (count == 2)
+            if (arr[si++] == 0)
+                count--;
+
+        len = max(len, ei - si);
+    }
+    return len;
+}
+
+//https://leetcode.com/problems/max-consecutive-ones-iii/
+//Approach- We have k 0s flipped to 1 and inlcuded in our subarray, so till the time we encounter zeroes, we increase the count, but once that count reaches beyond k, we need to
+//eliminate the previous 0s to find if we can have even a longer subarray. Everytime we move the ei pointer, we calculate the length of subarray and return the maximum length
+
+int longestOnes(vector<int>& nums, int k) {
+    int n=nums.size(), si=0, ei=0, len=0, count=0;
+    while(ei<n){
+        if(nums[ei++]==0) count++;
+        while(count>k){
+            if(nums[si++]==0) count--;
+        }
+        len=max(len,ei-si);
+    }
+    return len;
+}
+
+//https://leetcode.com/problems/subarray-sums-divisible-by-k/
+//Approach- We calculate the sum by traversing through the array and then find the remainder and store the number of times we get the same remainder. The subarray between the
+//subarray that had reminder r and the next subarray that will have the remainder r is the subarray that is exactly divisble by k. We calcuate our answer by adding the number
+//of times we encounter the same remainder from the sum of subarray.
+
+int subarraysDivByK(vector<int>& nums, int k) {
+    int ans=0;
+    unordered_map<int,int> rem;
+    rem[0]=1;
+    int sum=0, r=0;
+    for(int i=0; i<nums.size(); i++){
+        sum+=nums[i];
+        int r=sum%k;
+        if(r<0){
+            r+=k;
+        }
+        ans+=rem[r];
+        rem[r]++;
+    }
+    return ans;    
+}
