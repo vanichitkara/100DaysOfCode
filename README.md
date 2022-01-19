@@ -197,3 +197,6 @@ Solved 4 questions (minimum window substring, smallest distinct window, longest 
 
 ### Day 64 (18/01/22)
 Solved 4 questions (subarrays with k different integer, count number of nice subarrays, fruit into baskets, binary subarrays wirh sum)
+
+### Day 65 (19/01/22)
+Solved 4 questions (max consecutive ones, max consecutive ones ii, max consecutive ones iii, subarray sums divisble by k)
