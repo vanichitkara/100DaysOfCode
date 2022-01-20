@@ -200,3 +200,6 @@ Solved 4 questions (subarrays with k different integer, count number of nice sub
 
 ### Day 65 (19/01/22)
 Solved 4 questions (max consecutive ones, max consecutive ones ii, max consecutive ones iii, subarray sums divisble by k)
+
+### Day 66 (20/01/22)
+Solved 3 questions (subarrays with equal 1s and 0s, contiguous array, sliding window maximum)
