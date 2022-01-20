@@ -479,3 +479,60 @@ int subarraysDivByK(vector<int>& nums, int k) {
     }
     return ans;    
 }
+
+
+// January 20
+
+//https://practice.geeksforgeeks.org/problems/count-subarrays-with-equal-number-of-1s-and-0s-1587115620/1/
+//Approach: We'll store the number of times we encounter the same sum in a hashmap. The subarray, between the subarrays that have the same sum, will have equal number of 0s and 
+//1s. To find the subarrays, we add the frequency of the sum and then increase its frequency.
+
+long long int countSubarrWithEqualZeroAndOne(int arr[], int n){
+    unordered_map<int,int> freq;
+    freq[0]=1;
+    int sum=0, ans=0;
+    for(int i=0; i<n; i++){
+        int val=arr[i];
+        sum+=val;
+        if(val==0) sum+=-1;
+        ans+=freq[sum];
+        freq[sum]++;
+    }
+    return ans;
+}
+
+//https://leetcode.com/problems/contiguous-array/
+//Approach: The approach is similar to the last one, but here we find the length of the subarray by subtracting the frequency of the sum from the current index. And if we get 
+//that sum for the first time, we map it with the index at which we got that sum. In hashmap, 0 is mapped with -1 so that we can calculate the length of array from zero to
+//index i when required.
+
+int findMaxLength(vector<int>& nums) {
+    int n=nums.size();
+    unordered_map<int,int> map;
+    map[0]=-1;
+    int len=0, sum=0;
+    for(int i=0; i<n; i++){
+        int val=nums[i];
+        sum+=val;
+        if(val==0) sum+=-1;
+        if(map.find(sum)!=map.end()) len=max(len,i-map[sum]);
+        else map[sum]=i;
+    }
+    return len;
+}
+
+//https://leetcode.com/problems/sliding-window-maximum/
+//Approach: We use a max heap to store the array elements and find the maximum in subarrays of k length. Whenever the length goes beyond k, we pop out the max element. The top
+//element, which is the largest element in the subarray of length k, is added to the answer vector and that vector is returned.
+
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    priority_queue<vector<int>> pq;
+    int n=nums.size();
+    vector<int> ans;
+    for(int i=0; i<n; i++){
+        while(pq.size()!=0 && pq.top()[1]<=i-k) pq.pop();
+        pq.push({nums[i],i});
+        if(i>=k-1) ans.push_back(pq.top()[0]);
+    }
+    return ans;
+}
