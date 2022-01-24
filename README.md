@@ -203,3 +203,9 @@ Solved 4 questions (max consecutive ones, max consecutive ones ii, max consecuti
 
 ### Day 66 (20/01/22)
 Solved 3 questions (subarrays with equal 1s and 0s, contiguous array, sliding window maximum)
+
+### Day 67 (22/01/22)
+Solved 5 questions (maximum subarray-kadane's algo, k concatenation maximum sum, maximum sum rectangle in 2D matrix, rabbits in forest, number of submatrices that sum to target)
+
+### Day 68 (24/01/22)
+Solved 1 question(max sum of rectangle no larger than k) and revised arrays
