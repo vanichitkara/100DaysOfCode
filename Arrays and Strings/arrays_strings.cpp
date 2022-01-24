@@ -536,3 +536,183 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
     }
     return ans;
 }
+
+
+// January 22
+
+//https://leetcode.com/problems/maximum-subarray/
+//Approach- We add the elements of the subarray till the time that subarray sum becomes less than the next element which has to be added. In that case, the next element starts 
+//its own subarrray and we store the sum of previous subarray in the maxSum variable. Whenever a new subarray is started, we update the maximum sum and return the overall maxSum
+
+int maxSubArray(vector<int>& nums) {
+    int maxSumSoFar=0, maxSum=-1e9;
+    for(int i=0; i<nums.size(); i++){
+        maxSumSoFar+=nums[i];
+        if(maxSumSoFar<nums[i]) maxSumSoFar=nums[i];
+        maxSum=max(maxSumSoFar,maxSum);
+    }
+    return maxSum;
+}
+
+//https://leetcode.com/problems/k-concatenation-maximum-sum/
+//Approach- First we write Kadane's algorithm and then write a function to concatenate the given array and make an array of twice the size of given array. Then we check that if
+//k=1, then we simply apply Kadanes's algo. The sum of the array that we have found earlier, if that sum is less than zero, then we know that sum of subarray of the first and
+//last subarrays out of the K subarrays will give then maximum sum. And if sum>0, then we find the maximum sum by finding maximum subarray of first and last arrays and adding 
+//the (k-2)subarray sum along with it.
+
+long long mod=1e9+7;
+int Kadanes(vector<int>& arr){
+    long long maxSumSoFar=0;
+    long long maxSum=0;
+    for(int i=0; i<arr.size(); i++){
+        maxSumSoFar+=arr[i];
+        if(maxSumSoFar<arr[i]) maxSumSoFar=arr[i];
+        maxSum=max(maxSum,maxSumSoFar);
+    }
+    return maxSum%mod;
+}
+
+int Kadanes2(vector<int>&arr){
+    vector<int>narr(arr.size()*2);
+    for(int i=0; i<arr.size(); i++){
+        narr[i]=arr[i];
+    }
+    for(int i=0; i<arr.size(); i++){
+        narr[i+arr.size()]=arr[i];
+    }
+    int maxsum=Kadanes(narr);
+    return maxsum%mod;
+}
+int kConcatenationMaxSum(vector<int>& arr, int k) {
+    long long sum=0;
+    int result=0;
+    for(int i=0; i<arr.size(); i++){
+        sum+=arr[i];
+    }
+    sum=sum%mod;
+    if(k==1) 
+        result=Kadanes(arr);
+    else if(sum<0) 
+        result=Kadanes2(arr);
+    else 
+        result=Kadanes2(arr)+(((k-2)*sum)%mod);
+
+    return result%mod;
+}
+
+//https://www.geeksforgeeks.org/maximum-sum-rectangle-in-a-2d-matrix-dp-27/
+//Approach- We make a vector of size of the row whenever we move the i pointer, in that vector we store the elements of the row and aplly kadane's algo to find max sum. Then we
+//add the elements in the vector which belong to the row below it and again apply kadane's algo. By doing this, we find the maximum sum and we check that what all elements are
+//covered to make that maximum sum and that matrix is the one with the maximum sum.
+
+int Kadanes(vector<int> arr){
+    int maxSum=-1e9, maxSumSoFar=0;
+    for(int i=0; i<arr.size(); i++){
+        maxSumSoFar+=arr[i];
+        if(maxSumSoFar<arr[i]) maxSumSoFar=arr[i];
+        maxSum=max(maxSum,maxSumSoFar);
+    }
+    return maxSum;
+}
+int maximumSumRectangle(int R, int C, vector<vector<int>> a) {
+    int ans=-1e9;
+    for(int i=0; i<a.size(); i++){
+        vector<int> v(a[0].size(),0);
+        for(int j=i;j<a.size();j++){
+            for(int k=0;k<a[0].size();k++)
+                v[k]+=a[j][k];
+            ans=max(ans,Kadanes(v));
+        }
+    }
+    return ans;
+}
+
+//https://leetcode.com/problems/rabbits-in-forest/
+//Approach- We make a hashamp which will store the number of rabits of a given color. When we first encounter a rabit of a new color, we know that there is x more rabits of the
+//same color, so we add x+1 to our answer and increase the count in hashmap. When the count goes beyond a given x, we rest the hashmap count to zero to accomodate all the rabits
+
+int numRabbits(vector<int>& answers) {
+    unordered_map <int,int> map;
+
+    int ans = 0;
+    for (int ele : answers) {
+        if (map[ele] == 0)
+            ans += (ele + 1);
+        map[ele]++;
+
+        if (map[ele] == ele + 1)
+            map[ele] = 0;
+    }
+
+    return ans;
+}
+
+//https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/
+//Approach- The approach is quite similar to maximum sum matrix in 2D array, but here we count the frequency of sum-target elements and give that count for the vector formed
+//everytime we move the i pointer to cover the whole vector.
+
+int countSubarraysGivenTarget(vector<int> arr, int tar) {
+    unordered_map<int,int> map;
+    map[0]=1;
+    int count = 0, sum = 0;
+    for (int ele : arr) {
+        sum += ele;
+        count += map[sum-tar];
+        map[sum]++;
+    }
+
+    return count;
+}
+int numSubmatrixSumTarget(vector<vector<int>>& arr, int tar) {
+    int n = arr.size(), m = arr[0].size();
+    int count = 0;
+
+    for (int fixedRow = 0; fixedRow < n; fixedRow++) {
+
+        vector<int>prefixColArray(m,0);
+        for (int row = fixedRow; row < n; row++) {
+            for (int col = 0; col < m; col++)
+                prefixColArray[col] += arr[row][col];
+
+            count += countSubarraysGivenTarget(prefixColArray, tar);
+        }
+    }
+
+    return count;
+}
+
+
+// January 24
+
+//https://leetcode.com/problems/max-sum-of-rectangle-no-larger-than-k/submissions/
+//Approach- Here we modify the kadane's algo to check that the sum should be less than K. Other than that, the question is similar to maximum sum matrix in 2D array
+
+int kadane(vector<int>arr, int k){
+    int maxSum=-1e9;
+    for(int i=0; i<arr.size(); i++){
+        int maxSumSoFar=0;
+        for(int j=i; j<arr.size(); j++){
+            maxSumSoFar+=arr[j];
+            if(maxSumSoFar<=k && maxSumSoFar>maxSum) maxSum = maxSumSoFar;
+        } 
+    }
+    return maxSum;
+}
+
+int maxSumSubmatrix(vector<vector<int>>&arr, int k) {
+    int n = arr.size(), m = arr[0].size();
+    int ans = -1e9;
+
+    for (int fixedRow = 0; fixedRow < n; fixedRow++) {
+
+        vector<int>prefixColArray(m,0);
+        for (int row = fixedRow; row < n; row++) {
+            for (int col = 0; col < m; col++)
+                prefixColArray[col] += arr[row][col];
+
+            ans = max(ans,kadane(prefixColArray,k));  
+        }
+    }
+
+    return ans;
+}
